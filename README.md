@@ -1,40 +1,41 @@
 # Women's Fashion Trend Prediction Website
 
-This project is a college-ready end-to-end machine learning and frontend system for predicting trending women's clothing preferences by age group and occasion.
+This repository contains my final-year project on women’s fashion trend classification and frontend visualization.
 
-It combines:
-- Jupyter Notebook + Python for data cleaning, EDA, feature engineering, KNN modeling, evaluation, and export
-- HTML, CSS, and JavaScript for a static shopping-style website
-- precomputed JSON files so the project works on GitHub Pages without a Python backend
+The project has two parts:
+- a Jupyter/Python workflow for cleaning data, engineering features, training a KNN model, and exporting results
+- a static HTML/CSS/JavaScript website that reads those exported JSON files and presents them in a website interface
 
-## Project Overview
+## What The Project Does
 
-Business idea:
-an AI-assisted fashion website that identifies what styles are trending for different women based on age group, occasion, and product popularity.
+This is not a live commercial forecasting system. It is a student project that explores whether product metadata can be used to create useful proxy trend labels and show the results in a clear frontend.
 
-Examples used in the project:
-- Teen girls: tops, dresses, shorts, co-ord styles
-- Young women: co-ord sets, dresses, office-ready looks, casual tops
-- Married women: kurtis, ethnic sets, festive wear
-- Older women: sarees, traditional wear, classic ethnic styles
+In simple terms, the workflow is:
+1. Load a women’s fashion product dataset from Kaggle.
+2. Clean the data and parse useful information from `p_attributes`.
+3. Derive features such as `occasion`, `style_category`, `age_group`, `price_band`, and popularity-related measures.
+4. Create proxy targets such as `trend_score` and `trend_label` using rules and scoring logic.
+5. Train and evaluate a `KNeighborsClassifier`.
+6. Export the processed outputs to JSON.
+7. Display those exports in a static website hosted on GitHub Pages.
 
-Main occasions used in the website:
-- Casual
-- Party
-- Wedding
-- Festive
-- Office
-- Vacation
-- Daily Wear
+## Important Honesty Note
 
-## Dataset Used
+For panel presentation, these are the most important points to say clearly:
 
-The notebook is built around the Kaggle CSV placed here:
+- `trend_label` is an engineered target, not a real customer ground-truth label.
+- `age_group` is inferred from product text and attributes because the dataset does not contain real customer age values.
+- `occasion` is partly derived from `p_attributes` and keyword rules.
+- `ratingCount` and `avg_rating` are used as popularity and quality proxies because transaction-level behavior is not available.
+- the website is a static demo that reads exported JSON files; it is not running a live backend model.
 
-`data/raw/Fashion Dataset.csv`
+## Dataset
 
-Actual columns found in the dataset:
-- `p_id`
+Raw dataset location:
+
+- `data/raw/Fashion Dataset.csv`
+
+Useful columns in the dataset:
 - `name`
 - `price`
 - `colour`
@@ -45,107 +46,132 @@ Actual columns found in the dataset:
 - `description`
 - `p_attributes`
 
-Most useful columns for this project:
-- `name`: helps identify product type
-- `price`: numeric feature for KNN
-- `brand`: useful for brand popularity features
-- `colour`: optional categorical context
-- `img`: used in the website product cards
-- `ratingCount`: popularity proxy
-- `avg_rating`: quality/review proxy
-- `description`: keyword-based feature engineering
-- `p_attributes`: the richest column because it contains `Occasion`, `Top Type`, `Bottom Type`, `Main Trend`, and more
+Why these columns matter:
+- `name` and `description` help identify style/category keywords
+- `price` supports value and price-band features
+- `brand` helps with brand-level patterns
+- `img` is used in the website cards
+- `ratingCount` is used as a popularity proxy
+- `avg_rating` is used as a quality proxy
+- `p_attributes` contains important fields such as occasion and garment details
 
-## Assumptions
+## Notebook And ML Workflow
 
-The dataset does not directly contain all business columns needed for live trend prediction, so the notebook makes these clear assumptions:
+Notebook files:
 
-- There is no real customer age column, so `age_group` is created using rule-based fashion logic from product text and attributes.
-- There is no true customer purchase history or customer ID, so `ratingCount` is used as a popularity proxy.
-- There is no direct trend label, so the notebook creates `trend_score` and `trend_label` logically from ratings, popularity, value, and style fit.
-- There is no reliable single `occasion` column outside the attributes, so occasion labels are created from `p_attributes` and product keywords.
+- [`notebooks/fashion_trend_analysis.ipynb`](notebooks/fashion_trend_analysis.ipynb)
+- [`notebooks/fashion_trend_analysis.py`](notebooks/fashion_trend_analysis.py)
 
-## Machine Learning Workflow
+Main steps in the notebook:
+1. Load the raw CSV from `data/raw/`.
+2. Clean duplicates and missing values.
+3. Parse `p_attributes` into usable columns.
+4. Engineer features such as `occasion`, `style_category`, `age_group`, `price_band`, and popularity/value features.
+5. Create `trend_score` and `trend_label`.
+6. Train a `KNeighborsClassifier`.
+7. Evaluate the classifier with accuracy, precision, recall, and F1-score.
+8. Export website-ready JSON files to `web/data/`.
 
-The notebook file is:
+Why KNN was used:
+- it is easy to explain in an academic setting
+- it fits a similarity-based classification idea
+- it shows the effect of encoding, scaling, and feature engineering clearly
 
-- [fashion_trend_analysis.ipynb](/Users/vidhidhawan/Documents/New project/notebooks/fashion_trend_analysis.ipynb)
+Important evaluation note:
+- the reported validation accuracy is against derived trend labels, not against real customer behavior labels
+- on the homepage, this is shown as `Validation Accuracy (Derived Labels)` to avoid overstating what the metric means
 
-There is also a Python-source version of the same notebook:
+## My Contribution
 
-- [fashion_trend_analysis.py](/Users/vidhidhawan/Documents/New project/notebooks/fashion_trend_analysis.py)
-
-Notebook steps:
-1. Load the raw Kaggle dataset from `data/raw/`.
-2. Inspect columns and explain which fields are useful.
-3. Clean the data:
-   remove duplicates, fill missing values, and cap outliers in `price` and `ratingCount`.
-4. Parse `p_attributes` into usable columns.
-5. Create business features:
-   `occasion`, `style_category`, `age_group`, `price_band`, `brand_popularity`, `value_score`, and more.
-6. Create the prediction target:
-   `trend_label` with classes `Classic Stable`, `Rising Trend`, and `High Trend`.
-7. Train a `KNeighborsClassifier` only.
-8. Evaluate the model using:
-   accuracy, precision, recall, F1-score, classification report, and confusion matrix.
-9. Export cleaned CSV and frontend JSON files for the website.
-
-Why KNN is used:
-- easy to explain in a college project
-- works well when similar products should receive similar trend labels
-- requires proper scaling and encoding, which the notebook demonstrates clearly
-
-Why silhouette score is not used:
-- silhouette score is for clustering
-- this project uses supervised KNN classification
-- so classification metrics are the correct evaluation choice
+The parts I implemented in this project include:
+- understanding the raw dataset and identifying usable columns
+- cleaning the data and handling missing values
+- extracting information from `p_attributes`
+- designing rule-based features for `occasion`, `age_group`, and `trend_score`
+- training and evaluating the KNN classifier
+- exporting notebook outputs into JSON for static hosting
+- building the frontend in HTML, CSS, and JavaScript
+- connecting the exported data to the website without using a backend framework
 
 ## Website
 
-The static website lives in:
+Frontend files:
 
-- [index.html](/Users/vidhidhawan/Documents/New project/web/index.html)
-- [cart.html](/Users/vidhidhawan/Documents/New project/web/cart.html)
-- [checkout.html](/Users/vidhidhawan/Documents/New project/web/checkout.html)
-- [styles.css](/Users/vidhidhawan/Documents/New project/web/styles.css)
-- [app.js](/Users/vidhidhawan/Documents/New project/web/app.js)
+- [`web/index.html`](web/index.html)
+- [`web/cart.html`](web/cart.html)
+- [`web/checkout.html`](web/checkout.html)
+- [`web/styles.css`](web/styles.css)
+- [`web/app.js`](web/app.js)
 
-Website features:
-- landing page with branding and hero banner
-- trending recommendations section
-- age-group-based recommendation section
-- occasion-wise recommendation section
+What the website shows:
+- homepage with project summary and key exported metrics
+- featured recommendations from exported model outputs
+- profile-based trend matching by age group and occasion
+- age-group recommendation blocks
+- occasion-based recommendation blocks
 - searchable and filterable product listing
-- add to cart
-- cart summary page
-- checkout form with address and payment UI
-- responsive design
-- static JSON integration for GitHub Pages
+- cart and checkout demo flow using browser storage
 
-Brand tone used:
-- polished
-- fashion-focused
-- modern
-- submission-ready for a final-year project demo
+## Exported Files Used By The Website
+
+The notebook generates:
+- `data/processed/fashion_trend_dataset.csv`
+- `web/data/model_summary.json`
+- `web/data/recommendations.json`
+- `web/data/sample_products.json`
+- `web/data/profile_predictions.json`
+- `web/data/trends_by_age.json`
+- `web/data/trends_by_occasion.json`
+
+The frontend reads these exported files with JavaScript and renders the UI from them.
+
+## How To Run Locally
+
+Install Python dependencies if you want to rerun the notebook:
+
+```bash
+pip install -r requirements.txt
+```
+
+To preview the website locally, serve the `web/` folder through a local HTTP server:
+
+```bash
+python3 -m http.server 8000 --directory web
+```
+
+Then open:
+
+- [http://localhost:8000](http://localhost:8000)
+
+Important:
+- do not open `web/index.html` directly with `file://`
+- browsers often block `fetch()` calls to local JSON files in `file://` mode
+- if you use `file://`, the page may show fallback values instead of the exported data
+
+## GitHub Pages Deployment
+
+GitHub Pages is configured through:
+
+- [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)
+
+That workflow publishes the `web/` folder directly. So the deployed website and the correct local preview should both be served from the same folder structure.
 
 ## Folder Structure
 
 ```text
 New project/
-├── .gitignore
-├── README.md
-├── requirements.txt
+├── .github/
+│   └── workflows/
+│       └── deploy-pages.yml
 ├── data/
-│   ├── README.md
 │   ├── raw/
-│   │   ├── Fashion Dataset.csv
-│   │   └── README.md
+│   │   └── Fashion Dataset.csv
 │   └── processed/
 │       └── fashion_trend_dataset.csv
-├── models/
 ├── notebooks/
 │   ├── fashion_trend_analysis.ipynb
 │   └── fashion_trend_analysis.py
+├── requirements.txt
 └── web/
     ├── index.html
     ├── cart.html
@@ -154,107 +180,21 @@ New project/
     ├── app.js
     ├── assets/
     └── data/
-        ├── model_summary.json
-        ├── recommendations.json
-        ├── sample_products.json
-        ├── trends_by_age.json
-        ├── trends_by_occasion.json
-        └── profile_predictions.json
 ```
-
-## How Notebook Output Connects To The Website
-
-GitHub Pages cannot run Python or a Jupyter model live.
-
-So this project uses the best static-hosting alternative:
-
-1. Train and evaluate the KNN model locally in Jupyter.
-2. Export results into JSON files inside `web/data/`.
-3. Load those JSON files using JavaScript in the website.
-4. Display recommendations, top trends, and precomputed profile predictions in the UI.
-
-This means:
-- no backend is required
-- the website stays GitHub Pages compatible
-- the frontend still shows model-driven outputs
-
-## Output Files Generated By The Notebook
-
-The notebook exports:
-- `data/processed/fashion_trend_dataset.csv`
-- `web/data/model_summary.json`
-- `web/data/recommendations.json`
-- `web/data/sample_products.json`
-- `web/data/trends_by_age.json`
-- `web/data/trends_by_occasion.json`
-- `web/data/profile_predictions.json`
-
-## How To Run The Project
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Run the notebook:
-1. Open the project in VS Code or Jupyter.
-2. Open [fashion_trend_analysis.ipynb](/Users/vidhidhawan/Documents/New project/notebooks/fashion_trend_analysis.ipynb).
-3. Run all cells from top to bottom.
-
-Preview the website locally:
-1. Open the `web/` folder using VS Code Live Server, or serve the project with a static file server.
-2. Open `index.html` through that local server.
-
-Important:
-opening the HTML file directly with `file://` may block `fetch()` calls for JSON. Use Live Server or any simple local web server while testing.
-
-## GitHub Pages Deployment Steps
-
-This project now includes a ready-made workflow:
-
-- [.github/workflows/deploy-pages.yml](/Users/vidhidhawan/Documents/New project/.github/workflows/deploy-pages.yml)
-
-It deploys the `web/` folder directly to GitHub Pages whenever you push to the `main` branch.
-
-Follow these steps:
-1. Create a new GitHub repository.
-2. Push this project to that repository.
-3. In GitHub, open `Settings > Pages`.
-4. For the source, choose `GitHub Actions`.
-5. Push again if needed, or open the `Actions` tab and let the workflow run.
-6. After the workflow succeeds, GitHub will publish your site URL.
-
-Example commands:
-
-```bash
-cd "/Users/vidhidhawan/Documents/New project"
-git add .
-git commit -m "Add women fashion trend prediction project"
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-git push -u origin main
-```
-
-After pushing:
-1. Open the GitHub repository.
-2. Go to `Settings > Pages`.
-3. Set the source to `GitHub Actions`.
-4. Wait for the `Deploy GitHub Pages` workflow to finish.
-5. Open the Pages URL shown by GitHub.
 
 ## Limitations
 
-- The dataset is product-centric, not customer-centric.
-- Age groups are inferred using business rules, not real customer age data.
-- Purchase behavior is approximated using ratings and rating count.
-- Real-time prediction is not available on GitHub Pages because there is no Python backend.
-- Occasion labels are partly rule-based because the dataset stores many details inside `p_attributes`.
+- the dataset is product-centric, not customer-centric
+- the target labels are engineered proxies
+- age group and some occasion values are inferred rather than observed
+- popularity is approximated from ratings and rating count
+- the website is static and does not run the model live
+- without a backend, GitHub Pages can only display exported results, not fresh predictions
 
 ## Future Improvements
 
-- Add a true customer dataset with age, purchases, and order history
-- add seasonal trend analysis if month or date fields become available
-- build a Flask or FastAPI backend for real-time prediction
-- add collaborative filtering or hybrid recommendation logic in a future version
-- improve image asset handling by downloading curated local product images
-- add user login, wishlist, and order history for a fuller ecommerce experience
+- test additional classifiers and compare them fairly against KNN
+- use a dataset with real customer purchase history
+- add stronger validation around the engineered labels
+- store curated product images locally to reduce external image dependency
+- add a backend if live prediction is needed in a future version

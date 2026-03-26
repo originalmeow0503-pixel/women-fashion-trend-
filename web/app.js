@@ -1,5 +1,5 @@
 const STORAGE_KEY = "trendmuse_cart_v1";
-
+const DEFAULT_PRODUCT_IMAGE = "assets/images/hero-banner.svg";
 const state = {
   modelSummary: null,
   recommendations: [],
@@ -10,6 +10,8 @@ const state = {
   productCatalog: [],
   productMap: new Map(),
   cart: loadCart(),
+  loadIssues: [],
+  runtimeMode: window.location.protocol === "file:" ? "file" : "server",
 };
 
 document.addEventListener("DOMContentLoaded", init);
@@ -19,6 +21,7 @@ async function init() {
   await loadData();
   buildCatalog();
   updateCartCount();
+  renderRuntimeNotice();
 
   const page = document.body.dataset.page;
   if (page === "home") {
@@ -33,6 +36,20 @@ async function init() {
 }
 
 async function loadData() {
+  state.loadIssues = [];
+
+  // Opening the page with file:// prevents JSON fetch calls in many browsers.
+  if (window.location.protocol === "file:") {
+    state.runtimeMode = "file";
+    state.modelSummary = {};
+    state.recommendations = [];
+    state.sampleProducts = [];
+    state.profilePredictions = [];
+    state.trendsByAge = [];
+    state.trendsByOccasion = [];
+    return;
+  }
+
   const [modelSummary, recommendations, sampleProducts, profilePredictions, trendsByAge, trendsByOccasion] = await Promise.all([
     loadJson("data/model_summary.json", {}),
     loadJson("data/recommendations.json", []),
@@ -43,9 +60,12 @@ async function loadData() {
   ]);
 
   state.modelSummary = modelSummary;
-  state.recommendations = recommendations;
-  state.sampleProducts = sampleProducts;
-  state.profilePredictions = profilePredictions;
+  state.recommendations = recommendations.map(normalizeProduct);
+  state.sampleProducts = sampleProducts.map(normalizeProduct);
+  state.profilePredictions = profilePredictions.map((profile) => ({
+    ...profile,
+    products: (profile.products || []).map(normalizeProduct),
+  }));
   state.trendsByAge = trendsByAge;
   state.trendsByOccasion = trendsByOccasion;
 }
@@ -58,8 +78,40 @@ async function loadJson(path, fallback) {
     }
     return await response.json();
   } catch (error) {
+    state.loadIssues.push(path);
     return fallback;
   }
+}
+
+function normalizeProduct(product = {}) {
+  return {
+    ...product,
+    image: normalizeImageUrl(product.image),
+  };
+}
+
+function normalizeImageUrl(url) {
+  if (!url) return DEFAULT_PRODUCT_IMAGE;
+  return String(url).replace(/^http:\/\//i, "https://");
+}
+
+function renderRuntimeNotice() {
+  const notice = document.getElementById("runtimeNotice");
+  if (!notice) return;
+
+  if (state.runtimeMode === "file") {
+    notice.hidden = false;
+    notice.innerHTML = "<strong>Open this page through a local server.</strong> This site loads exported JSON files, so opening <code>index.html</code> with <code>file://</code> will not show the same data as GitHub Pages. Use <code>http://localhost:8000</code> or VS Code Live Server.";
+    return;
+  }
+
+  if (state.loadIssues.length) {
+    notice.hidden = false;
+    notice.innerHTML = `<strong>Some exported data files could not be loaded.</strong> Check that the server is rooted at the <code>web/</code> folder. Missing files: ${state.loadIssues.join(", ")}`;
+    return;
+  }
+
+  notice.hidden = true;
 }
 
 function buildCatalog() {
@@ -183,13 +235,17 @@ function renderMetrics() {
   const heroCategory = document.getElementById("heroCategory");
   const heroImage = document.getElementById("heroImage");
 
+  const hasAccuracy = typeof state.modelSummary.accuracy === "number";
+  const topCategory = state.modelSummary.top_trending_category || "--";
+
   if (dataset) dataset.textContent = state.modelSummary.dataset_file || "Fashion Dataset.csv";
-  if (accuracy) accuracy.textContent = `${((state.modelSummary.accuracy || 0) * 100).toFixed(1)}%`;
+  if (accuracy) accuracy.textContent = hasAccuracy ? `${(state.modelSummary.accuracy * 100).toFixed(1)}%` : "--";
   if (k) k.textContent = state.modelSummary.best_params?.classifier__n_neighbors || "--";
-  if (trend) trend.textContent = state.modelSummary.top_trending_category || "Tops";
-  if (heroCategory) heroCategory.textContent = state.modelSummary.top_trending_category || "Tops";
-  if (heroImage && state.sampleProducts[0]?.image) {
-    heroImage.src = state.sampleProducts[0].image;
+  if (trend) trend.textContent = topCategory;
+  if (heroCategory) heroCategory.textContent = topCategory === "--" ? "Awaiting Data" : topCategory;
+  if (heroImage) {
+    heroImage.src = state.sampleProducts[0]?.image || DEFAULT_PRODUCT_IMAGE;
+    heroImage.alt = state.sampleProducts[0]?.name || "Featured fashion selection";
   }
 }
 
@@ -197,19 +253,46 @@ function renderFeatured() {
   const grid = document.getElementById("featuredGrid");
   if (!grid) return;
   const featured = (state.sampleProducts.length ? state.sampleProducts : state.recommendations.slice(0, 8)).slice(0, 8);
+  if (!featured.length) {
+    grid.innerHTML = createEmptyStateCard("Start a local server to load the exported recommendation cards.");
+    return;
+  }
   grid.innerHTML = featured.map((product) => createProductCard(product)).join("");
 }
 
 function renderProfileControls() {
   const ageSelect = document.getElementById("ageSelect");
   const occasionSelect = document.getElementById("occasionSelect");
+  const submitButton = document.querySelector('#profileForm button[type="submit"]');
   if (!ageSelect || !occasionSelect) return;
 
   const ageGroups = uniqueValues(state.profilePredictions.map((item) => item.age_group));
   const occasions = uniqueValues(state.profilePredictions.map((item) => item.occasion));
 
+  if (!ageGroups.length || !occasions.length) {
+    ageSelect.innerHTML = '<option value="">Local server required</option>';
+    occasionSelect.innerHTML = '<option value="">JSON data required</option>';
+    ageSelect.disabled = true;
+    occasionSelect.disabled = true;
+    if (submitButton) submitButton.disabled = true;
+    setText("resultPill", "Awaiting Data");
+    setText("resultCategory", "Exported results not loaded");
+    setText("resultSummary", "Start a local server to load the exported profile predictions and recommendation cards.");
+    setText("resultAge", "--");
+    setText("resultOccasion", "--");
+    setText("resultScore", "--");
+    const container = document.getElementById("predictionProducts");
+    if (container) {
+      container.innerHTML = createEmptyStateCard("Profile-based product matches will appear here after the JSON files load.");
+    }
+    return;
+  }
+
   ageSelect.innerHTML = ageGroups.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
   occasionSelect.innerHTML = occasions.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
+  ageSelect.disabled = false;
+  occasionSelect.disabled = false;
+  if (submitButton) submitButton.disabled = false;
 
   renderProfileResult(ageGroups[0], occasions[0]);
 
@@ -242,6 +325,11 @@ function renderAgeShowcase() {
   const container = document.getElementById("ageRecommendationGrid");
   if (!container) return;
 
+  if (!state.trendsByAge.length) {
+    container.innerHTML = createEmptyStateCard("Age-group recommendations will appear here after the exported data loads.");
+    return;
+  }
+
   const grouped = groupBy(state.trendsByAge, "age_group");
   const cards = Object.entries(grouped).map(([ageGroup, items]) => {
     const profile = state.profilePredictions.find((entry) => entry.age_group === ageGroup);
@@ -266,6 +354,11 @@ function renderAgeShowcase() {
 function renderOccasionShowcase() {
   const container = document.getElementById("occasionRecommendationGrid");
   if (!container) return;
+
+  if (!state.trendsByOccasion.length) {
+    container.innerHTML = createEmptyStateCard("Occasion-based recommendations will appear here after the exported data loads.");
+    return;
+  }
 
   const grouped = groupBy(state.trendsByOccasion, "occasion");
   const cards = Object.entries(grouped).map(([occasion, items]) => {
@@ -293,8 +386,18 @@ function renderShop() {
   const occasionFilter = document.getElementById("occasionFilter");
   const searchInput = document.getElementById("searchInput");
   const sortFilter = document.getElementById("sortFilter");
+  const grid = document.getElementById("shopGrid");
+  const meta = document.getElementById("shopMeta");
 
   if (!ageFilter || !occasionFilter || !searchInput || !sortFilter) return;
+
+  if (!state.recommendations.length) {
+    if (meta) meta.textContent = "No products loaded yet";
+    if (grid) {
+      grid.innerHTML = createEmptyStateCard("Start a local server to load the exported recommendation catalog.");
+    }
+    return;
+  }
 
   uniqueValues(state.recommendations.map((item) => item.age_group)).forEach((value) => {
     ageFilter.insertAdjacentHTML("beforeend", `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`);
@@ -327,11 +430,11 @@ function renderShop() {
       return Number(right.recommendation_score) - Number(left.recommendation_score);
     });
 
-    const grid = document.getElementById("shopGrid");
-    const meta = document.getElementById("shopMeta");
     if (meta) meta.textContent = `Showing ${items.length} products`;
     if (grid) {
-      grid.innerHTML = items.map((product) => createProductCard(product)).join("");
+      grid.innerHTML = items.length
+        ? items.map((product) => createProductCard(product)).join("")
+        : createEmptyStateCard("No products match the current filters.");
     }
   };
 
@@ -375,6 +478,10 @@ function renderCartSuggestions() {
   const container = document.getElementById("cartSuggestions");
   if (!container) return;
   const items = state.recommendations.slice(0, 4);
+  if (!items.length) {
+    container.innerHTML = createEmptyStateCard("Recommendation suggestions will appear here once the exported data loads.");
+    return;
+  }
   container.innerHTML = items.map((product) => createProductCard(product)).join("");
 }
 
@@ -470,25 +577,26 @@ function bindGlobalEvents() {
 }
 
 function createProductCard(product) {
+  const safeProduct = normalizeProduct(product);
   const key = buildProductKey(product);
-  const tags = (product.reason_tags || [])
+  const tags = (safeProduct.reason_tags || [])
     .slice(0, 3)
     .map((tag) => `<span>${escapeHtml(tag)}</span>`)
     .join("");
 
   return `
     <article class="product-card">
-      <img src="${escapeAttribute(product.image)}" alt="${escapeAttribute(product.name)}">
+      <img src="${escapeAttribute(safeProduct.image)}" alt="${escapeAttribute(safeProduct.name)}" loading="lazy">
       <div class="product-copy">
         <div class="product-meta">
-          <span>${escapeHtml(product.category || "Style")}</span>
-          <span>${escapeHtml(product.occasion || "Occasion")}</span>
+          <span>${escapeHtml(safeProduct.category || "Style")}</span>
+          <span>${escapeHtml(safeProduct.occasion || "Occasion")}</span>
         </div>
-        <h3>${escapeHtml(product.name)}</h3>
-        <p>${escapeHtml(product.brand || "Fashion Brand")} • ${escapeHtml(product.age_group || "Women")}</p>
+        <h3>${escapeHtml(safeProduct.name)}</h3>
+        <p>${escapeHtml(safeProduct.brand || "Fashion Brand")} • ${escapeHtml(safeProduct.age_group || "Women")}</p>
         <div class="tag-list">${tags}</div>
         <div class="product-footer">
-          <span class="price-line">${formatCurrency(product.price)}</span>
+          <span class="price-line">${formatCurrency(safeProduct.price)}</span>
           <button class="button button-primary" data-add-to-cart="${escapeAttribute(key)}">Add To Cart</button>
         </div>
       </div>
@@ -497,16 +605,16 @@ function createProductCard(product) {
 }
 
 function createMiniCard(product, ageGroup, occasion) {
-  const merged = { ...product, age_group: ageGroup, occasion };
+  const merged = normalizeProduct({ ...product, age_group: ageGroup, occasion });
   const key = buildProductKey(merged);
   return `
     <article class="mini-card product-card">
-      <img src="${escapeAttribute(product.image)}" alt="${escapeAttribute(product.name)}">
+      <img src="${escapeAttribute(merged.image)}" alt="${escapeAttribute(merged.name)}" loading="lazy">
       <div class="mini-copy">
-        <h4>${escapeHtml(product.name)}</h4>
-        <p>${escapeHtml(product.brand || "Fashion Brand")} • ${formatCurrency(product.price)}</p>
+        <h4>${escapeHtml(merged.name)}</h4>
+        <p>${escapeHtml(merged.brand || "Fashion Brand")} • ${formatCurrency(merged.price)}</p>
         <div class="product-footer">
-          <span class="price-line">Rating ${Number(product.rating || 0).toFixed(1)}</span>
+          <span class="price-line">Rating ${Number(merged.rating || 0).toFixed(1)}</span>
           <button class="button button-primary" data-add-to-cart="${escapeAttribute(key)}">Add To Cart</button>
         </div>
       </div>
@@ -515,22 +623,31 @@ function createMiniCard(product, ageGroup, occasion) {
 }
 
 function createCartItemCard(item) {
+  const safeItem = normalizeProduct(item);
   return `
     <article class="cart-item-card">
-      <img src="${escapeAttribute(item.image)}" alt="${escapeAttribute(item.name)}">
+      <img src="${escapeAttribute(safeItem.image)}" alt="${escapeAttribute(safeItem.name)}" loading="lazy">
       <div class="cart-item-copy">
         <div class="cart-item-main">
-          <h3>${escapeHtml(item.name)}</h3>
-          <button class="remove-button" data-remove-key="${escapeAttribute(item.key)}">Remove</button>
+          <h3>${escapeHtml(safeItem.name)}</h3>
+          <button class="remove-button" data-remove-key="${escapeAttribute(safeItem.key)}">Remove</button>
         </div>
-        <p>${escapeHtml(item.brand || "Fashion Brand")} • ${escapeHtml(item.category || "Style")} • ${escapeHtml(item.occasion || "Occasion")}</p>
-        <p>${formatCurrency(item.price)} each • Line total ${formatCurrency(item.line_total)}</p>
+        <p>${escapeHtml(safeItem.brand || "Fashion Brand")} • ${escapeHtml(safeItem.category || "Style")} • ${escapeHtml(safeItem.occasion || "Occasion")}</p>
+        <p>${formatCurrency(safeItem.price)} each • Line total ${formatCurrency(item.line_total)}</p>
         <div class="quantity-control">
-          <button class="quantity-button" data-quantity-key="${escapeAttribute(item.key)}" data-quantity-delta="-1">-</button>
+          <button class="quantity-button" data-quantity-key="${escapeAttribute(safeItem.key)}" data-quantity-delta="-1">-</button>
           <span>${item.quantity}</span>
-          <button class="quantity-button" data-quantity-key="${escapeAttribute(item.key)}" data-quantity-delta="1">+</button>
+          <button class="quantity-button" data-quantity-key="${escapeAttribute(safeItem.key)}" data-quantity-delta="1">+</button>
         </div>
       </div>
+    </article>
+  `;
+}
+
+function createEmptyStateCard(message) {
+  return `
+    <article class="empty-card">
+      <p>${escapeHtml(message)}</p>
     </article>
   `;
 }

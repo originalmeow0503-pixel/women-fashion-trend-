@@ -13,6 +13,7 @@
   --success: #2f7d58;
   --danger: #a84337;
   --shadow: 0 24px 60px rgba(105, 67, 51, 0.15);
+  --shadow-soft: 0 16px 34px rgba(105, 67, 51, 0.1);
   --radius-xl: 28px;
   --radius-lg: 22px;
   --radius-md: 16px;
@@ -30,7 +31,7 @@ html {
 
 body {
   margin: 0;
-  font-family: "Sora", sans-serif;
+  font-family: "Sora", "Avenir Next", "Segoe UI", sans-serif;
   color: var(--text);
   background:
     radial-gradient(circle at top left, rgba(255, 211, 199, 0.65), transparent 28%),
@@ -132,7 +133,7 @@ textarea {
 }
 
 .brand-copy strong {
-  font-family: "Cormorant Garamond", serif;
+  font-family: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", serif;
   font-size: 1.55rem;
   line-height: 1;
 }
@@ -218,6 +219,7 @@ textarea {
 .hero-copy,
 .hero-visual,
 .metric-card,
+.context-card,
 .selector-card,
 .result-card,
 .showcase-card,
@@ -253,7 +255,7 @@ textarea {
 .showcase-copy h3,
 .summary-card h2,
 .checkout-form h2 {
-  font-family: "Cormorant Garamond", serif;
+  font-family: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", serif;
   font-weight: 700;
   line-height: 0.95;
 }
@@ -265,6 +267,8 @@ textarea {
 
 .hero-text,
 .metric-card p,
+.context-card p,
+.context-list,
 .selector-notes p,
 .result-card p,
 .showcase-copy p,
@@ -326,6 +330,20 @@ textarea {
   font-size: 0.84rem;
 }
 
+.runtime-notice {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(168, 67, 55, 0.14);
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: var(--shadow-soft);
+  font-size: 0.92rem;
+}
+
+.runtime-notice strong {
+  color: var(--accent-dark);
+}
+
 .hero-visual {
   min-height: 560px;
   border-radius: 34px;
@@ -378,7 +396,7 @@ textarea {
 
 .floating-card-copy h2 {
   font-size: 2rem;
-  font-family: "Cormorant Garamond", serif;
+  font-family: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", serif;
 }
 
 .floating-card-small {
@@ -427,6 +445,7 @@ textarea {
 }
 
 .metric-grid,
+.context-grid,
 .discover-layout,
 .checkout-layout,
 .cart-layout,
@@ -443,6 +462,30 @@ textarea {
 .metric-card {
   border-radius: var(--radius-lg);
   padding: 24px;
+  min-height: 188px;
+}
+
+.context-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.context-card {
+  border-radius: var(--radius-xl);
+  padding: 24px;
+}
+
+.context-card h2 {
+  margin: 0 0 14px;
+  font-size: clamp(2rem, 3vw, 2.7rem);
+  font-family: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", serif;
+  line-height: 0.98;
+}
+
+.context-list {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 12px;
 }
 
 .metric-card span,
@@ -595,6 +638,20 @@ textarea:focus {
   overflow: hidden;
 }
 
+.product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px rgba(81, 43, 31, 0.18);
+}
+
 .product-card img,
 .showcase-card img,
 .mini-card img {
@@ -620,11 +677,20 @@ textarea:focus {
   padding: 16px;
 }
 
+.product-copy,
+.mini-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
 .product-copy h3,
 .showcase-copy h3,
 .mini-copy h4 {
   margin: 6px 0 8px;
   font-size: 1.04rem;
+  line-height: 1.25;
 }
 
 .product-meta,
@@ -651,6 +717,10 @@ textarea:focus {
 
 .price-line {
   font-weight: 700;
+}
+
+.product-footer {
+  margin-top: auto;
 }
 
 .toolbar {
@@ -812,6 +882,13 @@ textarea:focus {
   font-weight: 600;
 }
 
+.button:disabled,
+select:disabled,
+input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 .site-footer {
   width: min(calc(100% - 32px), var(--container));
   margin: 40px auto 34px;
@@ -923,6 +1000,7 @@ textarea:focus {
   }
 
   .metric-grid,
+  .context-grid,
   .product-grid,
   .featured-grid,
   .showcase-grid,
