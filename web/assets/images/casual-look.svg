@@ -1,0 +1,10 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" rx="24" fill="#F6E8E1"/>
+  <circle cx="642" cy="120" r="84" fill="#E5C79A"/>
+  <path d="M169 489C233 398 295 344 357 320C430 291 501 295 563 342C618 383 660 445 696 536V600H117V553C130 529 146 509 169 489Z" fill="#D68A7E"/>
+  <path d="M335 205C335 167 366 136 404 136C442 136 473 167 473 205C473 243 442 274 404 274C366 274 335 243 335 205Z" fill="#FFF6F0"/>
+  <path d="M281 437C281 358 345 294 424 294C503 294 567 358 567 437V600H281V437Z" fill="#FFF6F0"/>
+  <path d="M317 356H531L555 408H293L317 356Z" fill="#B65F59"/>
+  <text x="40" y="74" fill="#6E4B46" font-family="Georgia, serif" font-size="48" font-weight="700">Casual Trend</text>
+</svg>
+

@@ -1,0 +1,45 @@
+{
+  "dataset_file": "Fashion Dataset.csv",
+  "rows_after_cleaning": 14224,
+  "rows_removed_as_duplicates": 106,
+  "model": "KNeighborsClassifier",
+  "target": "trend_label",
+  "best_params": {
+    "classifier__metric": "minkowski",
+    "classifier__n_neighbors": 5,
+    "classifier__weights": "distance"
+  },
+  "accuracy": 0.9448,
+  "precision": 0.9447,
+  "recall": 0.9448,
+  "f1_score": 0.9445,
+  "class_labels": [
+    "Classic Stable",
+    "High Trend",
+    "Rising Trend"
+  ],
+  "confusion_matrix": [
+    [
+      910,
+      0,
+      30
+    ],
+    [
+      0,
+      938,
+      29
+    ],
+    [
+      38,
+      60,
+      840
+    ]
+  ],
+  "top_trending_category": "Kurtis & Kurtas",
+  "assumptions": [
+    "The dataset does not include real customer age values, so age groups are created using fashion-business rules from product text and product attributes.",
+    "The dataset does not include transaction-level customer history, so ratingCount is used as a popularity proxy and monetary behavior is approximated from price.",
+    "GitHub Pages cannot run Python in real time, so the notebook exports static JSON files used by the website."
+  ],
+  "note": "Silhouette score is not appropriate here because KNN is used for supervised classification, not clustering."
+}

@@ -1,0 +1,13 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" rx="36" fill="#F8EDE6"/>
+  <circle cx="940" cy="160" r="120" fill="#E7C2B9"/>
+  <circle cx="250" cy="160" r="90" fill="#E8D1A4" fill-opacity="0.8"/>
+  <path d="M170 680C270 550 345 460 420 390C523 295 650 238 770 248C860 255 936 309 1008 394C1057 451 1091 511 1128 602V816H112V785C124 747 142 713 170 680Z" fill="#D18277"/>
+  <path d="M744 168C688 168 646 209 628 273L593 400C584 433 560 460 529 473L458 502C433 511 416 534 416 560V716C416 747 441 772 472 772H816C847 772 872 747 872 716V538C872 516 861 495 843 480L784 429C763 411 750 383 750 353V273C750 242 769 216 799 205L836 192C816 177 783 168 744 168Z" fill="#FFF8F0"/>
+  <path d="M661 233C661 184 699 146 748 146C797 146 835 184 835 233C835 281 797 320 748 320C699 320 661 281 661 233Z" fill="#FFF8F0"/>
+  <path d="M557 714C557 653 606 604 667 604H780C841 604 890 653 890 714V772H557V714Z" fill="#B75C56"/>
+  <path d="M438 562C438 542 454 526 474 526H819C839 526 855 542 855 562V596H438V562Z" fill="#F1D6C9"/>
+  <text x="116" y="115" fill="#6E4B46" font-family="Georgia, serif" font-size="62" font-weight="700">Fashion Trend Intelligence</text>
+  <text x="120" y="170" fill="#8C6A64" font-family="Arial, sans-serif" font-size="26">Editorial styling, age-based insights, occasion-wise recommendations</text>
+</svg>
+

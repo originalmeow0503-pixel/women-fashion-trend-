@@ -1,0 +1,11 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" rx="24" fill="#F8EAE7"/>
+  <circle cx="132" cy="108" r="62" fill="#E4B7AE"/>
+  <circle cx="685" cy="130" r="38" fill="#E7CF9E"/>
+  <path d="M198 510C252 423 310 358 377 318C458 270 549 270 617 325C664 364 698 419 728 492V600H139V558C152 541 169 525 198 510Z" fill="#BB645C"/>
+  <path d="M350 177C350 138 381 107 420 107C458 107 490 138 490 177C490 216 458 247 420 247C381 247 350 216 350 177Z" fill="#FFF7F2"/>
+  <path d="M298 460C298 380 353 301 421 301C489 301 544 380 544 460V600H298V460Z" fill="#FFF7F2"/>
+  <path d="M315 377L420 307L526 377L481 600H358L315 377Z" fill="#D99A9A"/>
+  <text x="40" y="74" fill="#6E4B46" font-family="Georgia, serif" font-size="48" font-weight="700">Party Trend</text>
+</svg>
+

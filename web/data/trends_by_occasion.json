@@ -1,0 +1,142 @@
+[
+  {
+    "occasion": "Casual",
+    "style_category": "Tops",
+    "recommendation_score": 0.707733912037037
+  },
+  {
+    "occasion": "Casual",
+    "style_category": "Dresses",
+    "recommendation_score": 0.6065351449275362
+  },
+  {
+    "occasion": "Casual",
+    "style_category": "Shorts",
+    "recommendation_score": 0.603353861003861
+  },
+  {
+    "occasion": "Casual",
+    "style_category": "Bottom Wear",
+    "recommendation_score": 0.5607207551487414
+  },
+  {
+    "occasion": "Daily Wear",
+    "style_category": "Kurtis & Kurtas",
+    "recommendation_score": 0.7852210674157303
+  },
+  {
+    "occasion": "Daily Wear",
+    "style_category": "Co-ord Sets",
+    "recommendation_score": 0.6724500000000001
+  },
+  {
+    "occasion": "Daily Wear",
+    "style_category": "Dresses",
+    "recommendation_score": 0.6648000000000001
+  },
+  {
+    "occasion": "Daily Wear",
+    "style_category": "Sarees",
+    "recommendation_score": 0.6085166666666667
+  },
+  {
+    "occasion": "Festive",
+    "style_category": "Kurtis & Kurtas",
+    "recommendation_score": 0.713316768292683
+  },
+  {
+    "occasion": "Festive",
+    "style_category": "Traditional Wear",
+    "recommendation_score": 0.67779921875
+  },
+  {
+    "occasion": "Festive",
+    "style_category": "Ethnic Sets",
+    "recommendation_score": 0.6506237910583942
+  },
+  {
+    "occasion": "Festive",
+    "style_category": "Sarees",
+    "recommendation_score": 0.5602368270799348
+  },
+  {
+    "occasion": "Office",
+    "style_category": "Tops",
+    "recommendation_score": 0.7052685483870967
+  },
+  {
+    "occasion": "Office",
+    "style_category": "Office Wear",
+    "recommendation_score": 0.5704375
+  },
+  {
+    "occasion": "Office",
+    "style_category": "Bottom Wear",
+    "recommendation_score": 0.5449546511627907
+  },
+  {
+    "occasion": "Office",
+    "style_category": "Sarees",
+    "recommendation_score": 0.46372771084337355
+  },
+  {
+    "occasion": "Party",
+    "style_category": "Dresses",
+    "recommendation_score": 0.6734432432432432
+  },
+  {
+    "occasion": "Party",
+    "style_category": "Tops",
+    "recommendation_score": 0.6368518072289157
+  },
+  {
+    "occasion": "Party",
+    "style_category": "Jumpsuits",
+    "recommendation_score": 0.5426575
+  },
+  {
+    "occasion": "Party",
+    "style_category": "Co-ord Sets",
+    "recommendation_score": 0.49137571428571425
+  },
+  {
+    "occasion": "Vacation",
+    "style_category": "Tops",
+    "recommendation_score": 0.6995625
+  },
+  {
+    "occasion": "Vacation",
+    "style_category": "Co-ord Sets",
+    "recommendation_score": 0.6583
+  },
+  {
+    "occasion": "Vacation",
+    "style_category": "Shorts",
+    "recommendation_score": 0.5949225
+  },
+  {
+    "occasion": "Vacation",
+    "style_category": "Bottom Wear",
+    "recommendation_score": 0.444
+  },
+  {
+    "occasion": "Wedding",
+    "style_category": "Sarees",
+    "recommendation_score": 0.692275
+  },
+  {
+    "occasion": "Wedding",
+    "style_category": "Ethnic Sets",
+    "recommendation_score": 0.6861
+  },
+  {
+    "occasion": "Wedding",
+    "style_category": "Traditional Wear",
+    "recommendation_score": 0.4409
+  },
+  {
+    "occasion": "Wedding",
+    "style_category": "Co-ord Sets",
+    "recommendation_score": 0.2596125
+  }
+]

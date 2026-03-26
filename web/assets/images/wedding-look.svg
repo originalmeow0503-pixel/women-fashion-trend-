@@ -1,0 +1,11 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" rx="24" fill="#FBF1E8"/>
+  <circle cx="677" cy="101" r="78" fill="#E6C88F"/>
+  <path d="M194 511C254 425 311 364 377 328C461 283 560 286 635 357C675 394 705 437 732 495V600H120V560C142 543 165 527 194 511Z" fill="#C66E67"/>
+  <path d="M352 166C352 128 382 98 419 98C457 98 487 128 487 166C487 204 457 235 419 235C382 235 352 204 352 166Z" fill="#FFF8F0"/>
+  <path d="M287 450C287 371 346 292 419 292C492 292 551 371 551 450V600H287V450Z" fill="#FFF8F0"/>
+  <path d="M298 380L420 300L540 380L505 600H333L298 380Z" fill="#E8D6B6"/>
+  <path d="M351 424H488" stroke="#C89B45" stroke-width="10" stroke-linecap="round"/>
+  <text x="40" y="74" fill="#6E4B46" font-family="Georgia, serif" font-size="48" font-weight="700">Wedding Trend</text>
+</svg>
+

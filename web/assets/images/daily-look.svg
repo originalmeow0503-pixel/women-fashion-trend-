@@ -1,0 +1,9 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" rx="24" fill="#F7EFE8"/>
+  <circle cx="142" cy="109" r="73" fill="#E0C59D"/>
+  <path d="M193 507C257 418 318 355 386 323C466 285 557 289 626 348C672 387 706 442 732 507V600H119V558C138 540 160 522 193 507Z" fill="#C17A73"/>
+  <path d="M353 170C353 132 383 102 421 102C459 102 489 132 489 170C489 207 459 238 421 238C383 238 353 207 353 170Z" fill="#FFF8F2"/>
+  <path d="M290 455C290 376 348 298 421 298C494 298 552 376 552 455V600H290V455Z" fill="#FFF8F2"/>
+  <path d="M330 362H512V600H330V362Z" fill="#E6D1C9"/>
+  <text x="40" y="74" fill="#6E4B46" font-family="Georgia, serif" font-size="48" font-weight="700">Daily Trend</text>
+</svg>

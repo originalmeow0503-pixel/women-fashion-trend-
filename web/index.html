@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrendMuse | AI Women's Fashion Trends</title>
+  <meta
+    name="description"
+    content="A college-ready women's fashion trend prediction website built with KNN, Jupyter Notebook, and a static shopping-style frontend."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Sora:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="home">
+  <div class="page-glow page-glow-left"></div>
+  <div class="page-glow page-glow-right"></div>
+
+  <header class="site-header">
+    <a class="brand" href="./index.html">
+      <span class="brand-mark">TM</span>
+      <span class="brand-copy">
+        <strong>TrendMuse</strong>
+        <small>Fashion Trend Intelligence</small>
+      </span>
+    </a>
+
+    <nav class="site-nav">
+      <a href="#discover">Discover</a>
+      <a href="#age-edit">Age Edit</a>
+      <a href="#occasion-edit">Occasion Edit</a>
+      <a href="#shop">Shop</a>
+      <a href="./cart.html">Cart</a>
+      <a href="./checkout.html">Checkout</a>
+    </nav>
+
+    <a class="cart-link" href="./cart.html" aria-label="Open shopping cart">
+      Cart
+      <span class="cart-count" id="cartCount">0</span>
+    </a>
+  </header>
+
+  <main>
+    <section class="hero section" id="home">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">KNN Fashion Forecast</p>
+        <h1>See what is trending for every women’s fashion moment.</h1>
+        <p class="hero-text">
+          TrendMuse turns product ratings, popularity signals, category details, and occasion data
+          into a shopping-style website for a final-year project. The ML notebook trains a KNN model
+          offline, then exports static JSON that this site can serve on GitHub Pages.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#discover">Try The Trend Finder</a>
+          <a class="button button-secondary" href="#shop">Browse Products</a>
+        </div>
+
+        <div class="hero-tags">
+          <span>Age-group styling</span>
+          <span>Occasion-wise trends</span>
+          <span>No backend required</span>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal">
+        <article class="floating-card floating-card-main">
+          <img
+            id="heroImage"
+            src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80"
+            alt="Featured fashion look"
+          >
+          <div class="floating-card-copy">
+            <p>Top Trending Category</p>
+            <h2 id="heroCategory">Tops</h2>
+          </div>
+        </article>
+
+        <article class="floating-card floating-card-small top">
+          <img
+            src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=700&q=80"
+            alt="Fashion editorial look"
+          >
+          <div class="badge">Party Edit</div>
+        </article>
+
+        <article class="floating-card floating-card-small bottom">
+          <img
+            src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=700&q=80"
+            alt="Modern women's clothing styling"
+          >
+          <div class="badge">Daily Trend Feed</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-heading">
+        <p class="eyebrow">Project Snapshot</p>
+        <h2>Notebook insights translated into a shopping experience</h2>
+      </div>
+
+      <div class="metric-grid">
+        <article class="metric-card">
+          <span>Dataset</span>
+          <strong id="metricDataset">Fashion Dataset.csv</strong>
+          <p>Loaded from the Kaggle CSV placed in `data/raw/`.</p>
+        </article>
+        <article class="metric-card">
+          <span>KNN Accuracy</span>
+          <strong id="metricAccuracy">--</strong>
+          <p>Classification quality for the exported trend-label model.</p>
+        </article>
+        <article class="metric-card">
+          <span>Best K</span>
+          <strong id="metricK">--</strong>
+          <p>Chosen using weighted F1 during grid search.</p>
+        </article>
+        <article class="metric-card">
+          <span>Top Trend</span>
+          <strong id="metricTrend">Tops</strong>
+          <p>Highest-scoring style category from the exported recommendation data.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-heading">
+        <p class="eyebrow">Trending Section</p>
+        <h2>High-performing products from the model export</h2>
+      </div>
+      <div class="product-grid featured-grid" id="featuredGrid"></div>
+    </section>
+
+    <section class="section reveal" id="discover">
+      <div class="section-heading">
+        <p class="eyebrow">Trend Finder</p>
+        <h2>Choose an age group and occasion to view the strongest style match</h2>
+      </div>
+
+      <div class="discover-layout">
+        <form class="selector-card" id="profileForm">
+          <label>
+            Age Group
+            <select id="ageSelect"></select>
+          </label>
+
+          <label>
+            Occasion
+            <select id="occasionSelect"></select>
+          </label>
+
+          <button class="button button-primary" type="submit">Show Trend Match</button>
+
+          <div class="selector-notes">
+            <p><strong>Prediction target:</strong> `trend_label`</p>
+            <p><strong>Website behavior:</strong> precomputed recommendations for GitHub Pages</p>
+            <p><strong>ML method:</strong> KNN only</p>
+          </div>
+        </form>
+
+        <article class="result-card">
+          <div class="result-topline">
+            <span>Recommended Style</span>
+            <span class="pill" id="resultPill">High Trend</span>
+          </div>
+
+          <h3 id="resultCategory">Tops</h3>
+          <p id="resultSummary">
+            The exported notebook results say this style is the strongest match for the selected audience profile.
+          </p>
+
+          <div class="result-facts">
+            <div>
+              <span>Age Group</span>
+              <strong id="resultAge">Teen Girls (13-19)</strong>
+            </div>
+            <div>
+              <span>Occasion</span>
+              <strong id="resultOccasion">Casual</strong>
+            </div>
+            <div>
+              <span>Trend Score</span>
+              <strong id="resultScore">0.90</strong>
+            </div>
+          </div>
+
+          <div class="mini-grid" id="predictionProducts"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="age-edit">
+      <div class="section-heading">
+        <p class="eyebrow">Age-Group-Based Recommendations</p>
+        <h2>Fashion direction by life-stage segment</h2>
+      </div>
+      <div class="showcase-grid" id="ageRecommendationGrid"></div>
+    </section>
+
+    <section class="section reveal" id="occasion-edit">
+      <div class="section-heading">
+        <p class="eyebrow">Occasion-Wise Recommendations</p>
+        <h2>What performs best for each styling moment</h2>
+      </div>
+      <div class="showcase-grid" id="occasionRecommendationGrid"></div>
+    </section>
+
+    <section class="section reveal" id="shop">
+      <div class="section-heading">
+        <p class="eyebrow">Shop The Trends</p>
+        <h2>Search and filter products like a real storefront</h2>
+      </div>
+
+      <div class="toolbar">
+        <label class="toolbar-field toolbar-search">
+          <span>Search</span>
+          <input id="searchInput" type="search" placeholder="Search by style, brand, or product name">
+        </label>
+
+        <label class="toolbar-field">
+          <span>Age Group</span>
+          <select id="ageFilter">
+            <option value="all">All age groups</option>
+          </select>
+        </label>
+
+        <label class="toolbar-field">
+          <span>Occasion</span>
+          <select id="occasionFilter">
+            <option value="all">All occasions</option>
+          </select>
+        </label>
+
+        <label class="toolbar-field">
+          <span>Sort</span>
+          <select id="sortFilter">
+            <option value="trend_desc">Trend score: high to low</option>
+            <option value="price_asc">Price: low to high</option>
+            <option value="price_desc">Price: high to low</option>
+            <option value="rating_desc">Rating: high to low</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="section-meta" id="shopMeta">Showing 0 products</div>
+      <div class="product-grid" id="shopGrid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <strong>TrendMuse</strong>
+      <p>
+        Women’s fashion trend prediction website built with Python, Jupyter Notebook, KNN,
+        HTML, CSS, JavaScript, and static JSON exports.
+      </p>
+    </div>
+    <div class="footer-links">
+      <a href="./index.html">Home</a>
+      <a href="./cart.html">Cart</a>
+      <a href="./checkout.html">Checkout</a>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

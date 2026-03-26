@@ -1,0 +1,10 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" rx="24" fill="#F9EEE5"/>
+  <circle cx="137" cy="112" r="72" fill="#E1B97F"/>
+  <path d="M190 503C249 423 314 359 383 323C464 280 554 287 620 345C667 386 701 440 728 503V600H124V556C140 538 160 520 190 503Z" fill="#B95F58"/>
+  <path d="M352 171C352 132 383 101 422 101C460 101 491 132 491 171C491 209 460 240 422 240C383 240 352 209 352 171Z" fill="#FFF7F0"/>
+  <path d="M292 454C292 374 350 297 422 297C493 297 551 374 551 454V600H292V454Z" fill="#FFF7F0"/>
+  <path d="M321 366L422 302L522 366L503 600H341L321 366Z" fill="#D6A04C"/>
+  <text x="40" y="74" fill="#6E4B46" font-family="Georgia, serif" font-size="48" font-weight="700">Festive Trend</text>
+</svg>
+

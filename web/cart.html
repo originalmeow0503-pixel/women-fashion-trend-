@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrendMuse | Cart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Sora:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="cart">
+  <div class="page-glow page-glow-left"></div>
+  <div class="page-glow page-glow-right"></div>
+
+  <header class="site-header">
+    <a class="brand" href="./index.html">
+      <span class="brand-mark">TM</span>
+      <span class="brand-copy">
+        <strong>TrendMuse</strong>
+        <small>Fashion Trend Intelligence</small>
+      </span>
+    </a>
+
+    <nav class="site-nav">
+      <a href="./index.html#discover">Discover</a>
+      <a href="./index.html#shop">Shop</a>
+      <a href="./cart.html">Cart</a>
+      <a href="./checkout.html">Checkout</a>
+    </nav>
+
+    <a class="cart-link" href="./cart.html" aria-label="Open shopping cart">
+      Cart
+      <span class="cart-count" id="cartCount">0</span>
+    </a>
+  </header>
+
+  <main>
+    <section class="section page-intro reveal">
+      <p class="eyebrow">Cart Page</p>
+      <h1>Your saved fashion picks</h1>
+      <p>
+        Review selected products, adjust quantities, and continue to checkout.
+      </p>
+    </section>
+
+    <section class="section cart-layout reveal">
+      <div>
+        <div class="section-heading compact">
+          <h2>Cart Items</h2>
+        </div>
+        <div class="cart-items-list" id="cartItemsList"></div>
+      </div>
+
+      <aside class="summary-card">
+        <div class="summary-row">
+          <span>Total items</span>
+          <strong id="cartItemCount">0</strong>
+        </div>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <strong id="cartSubtotal">Rs. 0</strong>
+        </div>
+        <div class="summary-row summary-note">
+          <span>Shipping</span>
+          <strong>Free</strong>
+        </div>
+        <a class="button button-primary button-full" href="./checkout.html">Proceed To Checkout</a>
+        <a class="button button-secondary button-full" href="./index.html#shop">Continue Shopping</a>
+      </aside>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-heading compact">
+        <p class="eyebrow">You May Also Like</p>
+        <h2>More trending recommendations</h2>
+      </div>
+      <div class="product-grid" id="cartSuggestions"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <strong>TrendMuse</strong>
+      <p>Static-cart experience powered by browser storage for a GitHub Pages deployment.</p>
+    </div>
+    <div class="footer-links">
+      <a href="./index.html">Home</a>
+      <a href="./checkout.html">Checkout</a>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

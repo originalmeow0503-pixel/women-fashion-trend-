@@ -1,0 +1,77 @@
+[
+  {
+    "age_group": "Married Women (30-45)",
+    "style_category": "Kurtis & Kurtas",
+    "recommendation_score": 0.7123957597173144
+  },
+  {
+    "age_group": "Married Women (30-45)",
+    "style_category": "Ethnic Sets",
+    "recommendation_score": 0.5874704921540657
+  },
+  {
+    "age_group": "Married Women (30-45)",
+    "style_category": "Dresses",
+    "recommendation_score": 0.5219855263157895
+  },
+  {
+    "age_group": "Married Women (30-45)",
+    "style_category": "Traditional Wear",
+    "recommendation_score": 0.504925
+  },
+  {
+    "age_group": "Older Women (46+)",
+    "style_category": "Traditional Wear",
+    "recommendation_score": 0.7324416666666667
+  },
+  {
+    "age_group": "Older Women (46+)",
+    "style_category": "Sarees",
+    "recommendation_score": 0.6426385135135134
+  },
+  {
+    "age_group": "Older Women (46+)",
+    "style_category": "Jackets & Layers",
+    "recommendation_score": 0.31365
+  },
+  {
+    "age_group": "Teen Girls (13-19)",
+    "style_category": "Tops",
+    "recommendation_score": 0.7009247078778741
+  },
+  {
+    "age_group": "Teen Girls (13-19)",
+    "style_category": "Dresses",
+    "recommendation_score": 0.632357654185022
+  },
+  {
+    "age_group": "Teen Girls (13-19)",
+    "style_category": "Shorts",
+    "recommendation_score": 0.5998092541436464
+  },
+  {
+    "age_group": "Teen Girls (13-19)",
+    "style_category": "Jumpsuits",
+    "recommendation_score": 0.4684396646341463
+  },
+  {
+    "age_group": "Young Women (20-29)",
+    "style_category": "Tops",
+    "recommendation_score": 0.6863445652173913
+  },
+  {
+    "age_group": "Young Women (20-29)",
+    "style_category": "Dresses",
+    "recommendation_score": 0.6106325
+  },
+  {
+    "age_group": "Young Women (20-29)",
+    "style_category": "Co-ord Sets",
+    "recommendation_score": 0.5820515873015873
+  },
+  {
+    "age_group": "Young Women (20-29)",
+    "style_category": "Office Wear",
+    "recommendation_score": 0.4954375
+  }
+]

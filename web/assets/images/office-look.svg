@@ -1,0 +1,11 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" rx="24" fill="#F3ECE7"/>
+  <circle cx="676" cy="114" r="76" fill="#D8B98E"/>
+  <path d="M192 505C248 427 306 368 374 332C450 292 531 292 600 335C655 370 697 425 732 498V600H120V560C138 541 160 522 192 505Z" fill="#92716A"/>
+  <path d="M355 171C355 133 385 103 423 103C460 103 491 133 491 171C491 209 460 240 423 240C385 240 355 209 355 171Z" fill="#FFF9F4"/>
+  <path d="M292 457C292 377 350 299 423 299C495 299 554 377 554 457V600H292V457Z" fill="#FFF9F4"/>
+  <path d="M325 351H521L474 600H372L325 351Z" fill="#D2B0A6"/>
+  <path d="M372 352L423 299L473 352" stroke="#7B5D57" stroke-width="10" stroke-linecap="round"/>
+  <text x="40" y="74" fill="#6E4B46" font-family="Georgia, serif" font-size="48" font-weight="700">Office Trend</text>
+</svg>
+
