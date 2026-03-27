@@ -1,5 +1,56 @@
 const STORAGE_KEY = "trendmuse_cart_v1";
 const DEFAULT_PRODUCT_IMAGE = "assets/images/hero-banner.svg";
+const STYLE_PREFERENCE_CONFIG = {
+  no_preference: {
+    label: "No specific preference",
+    titlePrefix: "Balanced",
+    explanation: "without a strong colour preference",
+    keywords: [],
+    fallbackSort: "recommendation_score",
+  },
+  soft_neutrals: {
+    label: "Soft neutrals",
+    titlePrefix: "Soft Neutral",
+    explanation: "with lighter neutral shades such as cream, beige, and nude",
+    keywords: ["white", "off white", "cream", "beige", "nude", "taupe", "brown", "camel", "peach"],
+    fallbackSort: "price_asc",
+  },
+  bold_colours: {
+    label: "Bold colours",
+    titlePrefix: "Bold Colour",
+    explanation: "with brighter shades such as pink, red, orange, and coral",
+    keywords: ["pink", "fuchsia", "red", "orange", "coral", "magenta", "yellow"],
+    fallbackSort: "recommendation_score",
+  },
+  cool_tones: {
+    label: "Cool tones",
+    titlePrefix: "Cool Tone",
+    explanation: "with calmer blue and green shades",
+    keywords: ["blue", "green", "teal", "turquoise", "lavender", "navy", "olive"],
+    fallbackSort: "name_asc",
+  },
+  classic_darks: {
+    label: "Classic darks",
+    titlePrefix: "Classic Dark",
+    explanation: "with deeper shades such as black, navy, maroon, and grey",
+    keywords: ["black", "grey", "gray", "navy", "maroon", "purple", "charcoal"],
+    fallbackSort: "rating_desc",
+  },
+  festive_metallics: {
+    label: "Festive metallics",
+    titlePrefix: "Festive Metallic",
+    explanation: "with gold, silver, bronze, or champagne tones",
+    keywords: ["gold", "silver", "bronze", "champagne", "copper", "rose gold"],
+    fallbackSort: "price_desc",
+  },
+};
+const STYLE_FALLBACK_SORTERS = {
+  recommendation_score: (left, right) => Number(right.recommendation_score || 0) - Number(left.recommendation_score || 0),
+  rating_desc: (left, right) => Number(right.rating || 0) - Number(left.rating || 0),
+  price_asc: (left, right) => Number(left.price || 0) - Number(right.price || 0),
+  price_desc: (left, right) => Number(right.price || 0) - Number(left.price || 0),
+  name_asc: (left, right) => String(left.name || "").localeCompare(String(right.name || "")),
+};
 const state = {
   modelSummary: null,
   recommendations: [],
@@ -290,8 +341,11 @@ function renderFeatured() {
 function renderProfileControls() {
   const ageSelect = document.getElementById("ageSelect");
   const occasionSelect = document.getElementById("occasionSelect");
+  const categorySelect = document.getElementById("categorySelect");
+  const stylePreferenceSelect = document.getElementById("stylePreference");
+  const profileForm = document.getElementById("profileForm");
   const submitButton = document.querySelector('#profileForm button[type="submit"]');
-  if (!ageSelect || !occasionSelect) return;
+  if (!ageSelect || !occasionSelect || !categorySelect || !stylePreferenceSelect || !profileForm) return;
 
   const ageGroups = uniqueValues(state.profilePredictions.map((item) => item.age_group));
   const occasions = uniqueValues(state.profilePredictions.map((item) => item.occasion));
@@ -299,8 +353,12 @@ function renderProfileControls() {
   if (!ageGroups.length || !occasions.length) {
     ageSelect.innerHTML = '<option value="">Local server required</option>';
     occasionSelect.innerHTML = '<option value="">JSON data required</option>';
+    categorySelect.innerHTML = '<option value="">No categories available</option>';
+    stylePreferenceSelect.innerHTML = '<option value="">No style preferences available</option>';
     ageSelect.disabled = true;
     occasionSelect.disabled = true;
+    categorySelect.disabled = true;
+    stylePreferenceSelect.disabled = true;
     if (submitButton) submitButton.disabled = true;
     setText("resultPill", "Awaiting Data");
     setText("resultCategory", "Exported results not loaded");
@@ -308,6 +366,7 @@ function renderProfileControls() {
     setText("resultAge", "--");
     setText("resultOccasion", "--");
     setText("resultScore", "--");
+    setText("resultStyle", "--");
     const container = document.getElementById("predictionProducts");
     if (container) {
       container.innerHTML = createEmptyStateCard("Profile-based product matches will appear here after the JSON files load.");
@@ -317,34 +376,250 @@ function renderProfileControls() {
 
   ageSelect.innerHTML = ageGroups.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
   occasionSelect.innerHTML = occasions.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
+  stylePreferenceSelect.innerHTML = Object.entries(STYLE_PREFERENCE_CONFIG)
+    .map(([value, config]) => `<option value="${escapeHtml(value)}">${escapeHtml(config.label)}</option>`)
+    .join("");
   ageSelect.disabled = false;
   occasionSelect.disabled = false;
+  stylePreferenceSelect.disabled = false;
   if (submitButton) submitButton.disabled = false;
 
-  renderProfileResult(ageGroups[0], occasions[0]);
+  const syncCategoryOptions = () => {
+    populateCategoryOptions(ageSelect.value, occasionSelect.value, categorySelect.value);
+  };
 
-  document.getElementById("profileForm")?.addEventListener("submit", (event) => {
+  const updateProfileResult = () => {
+    renderProfileResult(
+      ageSelect.value,
+      occasionSelect.value,
+      categorySelect.value,
+      stylePreferenceSelect.value,
+    );
+  };
+
+  syncCategoryOptions();
+  updateProfileResult();
+
+  profileForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    renderProfileResult(ageSelect.value, occasionSelect.value);
+    updateProfileResult();
+  });
+
+  [ageSelect, occasionSelect].forEach((element) => {
+    element.addEventListener("change", () => {
+      syncCategoryOptions();
+      updateProfileResult();
+    });
+  });
+
+  [categorySelect, stylePreferenceSelect].forEach((element) => {
+    element.addEventListener("change", updateProfileResult);
   });
 }
 
-function renderProfileResult(ageGroup, occasion) {
-  const profile = state.profilePredictions.find((item) => item.age_group === ageGroup && item.occasion === occasion);
-  if (!profile) return;
+function populateCategoryOptions(ageGroup, occasion, selectedCategory = "") {
+  const categorySelect = document.getElementById("categorySelect");
+  if (!categorySelect) return [];
 
-  const label = profile.trend_score >= 0.75 ? "High Trend" : profile.trend_score >= 0.55 ? "Rising Trend" : "Niche Trend";
+  const categories = getCategoryOptions(ageGroup, occasion);
+  if (!categories.length) {
+    categorySelect.innerHTML = '<option value="">No categories available</option>';
+    categorySelect.disabled = true;
+    return [];
+  }
+
+  categorySelect.innerHTML = categories
+    .map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`)
+    .join("");
+  categorySelect.disabled = false;
+  categorySelect.value = categories.includes(selectedCategory) ? selectedCategory : categories[0];
+  return categories;
+}
+
+function getCategoryOptions(ageGroup, occasion) {
+  const categories = new Set();
+
+  state.profilePredictions
+    .filter((item) => item.age_group === ageGroup && item.occasion === occasion)
+    .forEach((profile) => {
+      if (profile.predicted_style) categories.add(profile.predicted_style);
+      (profile.products || []).forEach((product) => {
+        if (product.category) categories.add(product.category);
+      });
+    });
+
+  state.recommendations
+    .filter((item) => item.age_group === ageGroup && item.occasion === occasion)
+    .forEach((item) => {
+      if (item.category) categories.add(item.category);
+    });
+
+  return Array.from(categories);
+}
+
+function renderProfileResult(ageGroup, occasion, category, stylePreference) {
+  const profile = state.profilePredictions.find((item) => item.age_group === ageGroup && item.occasion === occasion);
+  const styleConfig = getStylePreferenceConfig(stylePreference);
+  const matchingProducts = getProfileProducts(ageGroup, occasion, category);
+  if (!profile && !matchingProducts.length) return;
+
+  const rankedProducts = rankProductsByStyle(matchingProducts, styleConfig).slice(0, 4);
+  const averageScore = rankedProducts.length
+    ? rankedProducts.reduce((sum, product) => sum + Number(product._matchScore || 0), 0) / rankedProducts.length
+    : Number(profile?.trend_score || 0);
+  const label = averageScore >= 0.75 ? "High Trend" : averageScore >= 0.55 ? "Rising Trend" : "Niche Trend";
+  const titleCategory = category || profile?.predicted_style || "Style Match";
+  const resultTitle = styleConfig.keywords.length
+    ? `${styleConfig.titlePrefix} ${titleCategory}`
+    : titleCategory;
+  const styleImpact = getStyleImpact(rankedProducts, styleConfig);
 
   setText("resultPill", label);
-  setText("resultCategory", profile.predicted_style);
-  setText("resultSummary", profile.summary);
-  setText("resultAge", profile.age_group);
-  setText("resultOccasion", profile.occasion);
-  setText("resultScore", profile.trend_score.toFixed(3));
+  setText("resultCategory", resultTitle);
+  setText("resultSummary", buildProfileExplanation(profile, titleCategory, styleConfig, rankedProducts));
+  setText("resultAge", ageGroup || profile?.age_group || "--");
+  setText("resultOccasion", occasion || profile?.occasion || "--");
+  setText("resultScore", averageScore.toFixed(3));
+  setText("resultStyle", styleConfig.label);
+  setStyleImpactIndicator(styleImpact);
+
+  const resultCard = document.querySelector(".home-result-card");
+  if (resultCard) resultCard.hidden = false;
 
   const container = document.getElementById("predictionProducts");
   if (container) {
-    container.innerHTML = profile.products.map((product) => createMiniCard(product, profile.age_group, profile.occasion)).join("");
+    container.innerHTML = rankedProducts.length
+      ? rankedProducts.map((product) => createMiniCard(product, ageGroup, occasion)).join("")
+      : createEmptyStateCard("No products match the selected profile.");
+  }
+}
+
+function getStylePreferenceConfig(stylePreference) {
+  return STYLE_PREFERENCE_CONFIG[stylePreference] || STYLE_PREFERENCE_CONFIG.no_preference;
+}
+
+function getProfileProducts(ageGroup, occasion, category) {
+  const profile = state.profilePredictions.find((item) => item.age_group === ageGroup && item.occasion === occasion);
+  const profileProducts = (profile?.products || []).filter((product) => !category || product.category === category);
+  const recommendationProducts = state.recommendations.filter((item) => {
+    const matchesAge = item.age_group === ageGroup;
+    const matchesOccasion = item.occasion === occasion;
+    const matchesCategory = !category || item.category === category;
+    return matchesAge && matchesOccasion && matchesCategory;
+  });
+
+  const merged = new Map();
+  [...profileProducts, ...recommendationProducts].forEach((product) => {
+    const key = buildProductKey(product);
+    if (!merged.has(key)) {
+      merged.set(key, normalizeProduct(product));
+    }
+  });
+
+  return Array.from(merged.values());
+}
+
+function rankProductsByStyle(products, styleConfig) {
+  const sortByFallback = STYLE_FALLBACK_SORTERS[styleConfig.fallbackSort] || STYLE_FALLBACK_SORTERS.recommendation_score;
+
+  return [...products]
+    .map((product) => {
+      const haystack = [
+        product.colour,
+        product.name,
+        product.description,
+        product.brand,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      const styleMatchCount = styleConfig.keywords.reduce((count, keyword) => {
+        return haystack.includes(keyword) ? count + 1 : count;
+      }, 0);
+      const baseScore = Number(product.recommendation_score || product.trend_score || 0);
+      const styleBoost = styleConfig.keywords.length ? styleMatchCount * 0.03 : 0;
+
+      return {
+        ...product,
+        _styleMatchCount: styleMatchCount,
+        _matchScore: baseScore + styleBoost,
+      };
+    })
+    .sort((left, right) => {
+      if (right._styleMatchCount !== left._styleMatchCount) {
+        return right._styleMatchCount - left._styleMatchCount;
+      }
+      const fallbackOrder = sortByFallback(left, right);
+      if (styleConfig.keywords.length && fallbackOrder !== 0) {
+        return fallbackOrder;
+      }
+      if (right._matchScore !== left._matchScore) {
+        return right._matchScore - left._matchScore;
+      }
+      return fallbackOrder;
+    });
+}
+
+function buildProfileExplanation(profile, category, styleConfig, rankedProducts) {
+  const matchedItems = rankedProducts.filter((product) => product._styleMatchCount > 0).length;
+  const baseSummary = profile?.summary
+    || `${category} is the closest match for the selected age group and occasion in the exported project data.`;
+  const categorySentence = category ? ` This view is focused on ${category.toLowerCase()}.` : "";
+  const styleSentence = !styleConfig.keywords.length
+    ? "The list is ordered by the main recommendation score for this profile."
+    : matchedItems
+      ? `${matchedItems} of the top items also align with the ${styleConfig.label.toLowerCase()} preference.`
+      : `The selected preference does not appear directly in the top items, so the list is softly re-ranked for a ${styleConfig.label.toLowerCase()} direction.`;
+
+  return `${baseSummary}${categorySentence} ${styleSentence}`;
+}
+
+function getStyleImpact(rankedProducts, styleConfig) {
+  const totalItems = rankedProducts.length;
+  const matchedItems = rankedProducts.filter((product) => product._styleMatchCount > 0).length;
+
+  if (!styleConfig.keywords.length) {
+    return {
+      label: "Assisted Ranking",
+      note: "No specific style preference was selected, so the result is ordered using the main recommendation score for this profile.",
+      tone: "fallback",
+    };
+  }
+
+  if (matchedItems >= Math.max(2, Math.ceil(totalItems / 2))) {
+    return {
+      label: "Strong Style Match",
+      note: `${matchedItems} of the top ${totalItems} items align clearly with the selected style preference.`,
+      tone: "strong",
+    };
+  }
+
+  if (matchedItems > 0) {
+    return {
+      label: "Partial Style Match",
+      note: `${matchedItems} of the top ${totalItems} items align with the selected style preference, while the final order still reflects the general recommendation score.`,
+      tone: "partial",
+    };
+  }
+
+  return {
+    label: "Assisted Ranking",
+    note: `The selected ${styleConfig.label.toLowerCase()} preference was not strongly present in the top items, so a style-aware re-ranking was used for this profile.`,
+    tone: "fallback",
+  };
+}
+
+function setStyleImpactIndicator(styleImpact) {
+  const label = document.getElementById("resultImpactLabel");
+  const note = document.getElementById("resultImpactNote");
+
+  if (label) {
+    label.textContent = styleImpact.label;
+    label.dataset.impact = styleImpact.tone;
+  }
+
+  if (note) {
+    note.textContent = styleImpact.note;
   }
 }
 

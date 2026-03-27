@@ -196,7 +196,17 @@
             <select id="occasionSelect"></select>
           </label>
 
-          <button class="button button-primary" type="submit">Show Trend Match</button>
+          <label>
+            Clothing Category
+            <select id="categorySelect"></select>
+          </label>
+
+          <label>
+            Style Preference
+            <select id="stylePreference"></select>
+          </label>
+
+          <button class="button button-primary" type="submit">Predict Trend Match</button>
 
           <div class="selector-notes home-selector-notes">
             <p><strong>Prediction target:</strong> derived `trend_label` classes</p>
@@ -216,6 +226,16 @@
             This recommendation comes from the exported notebook output for the selected profile.
           </p>
 
+          <div class="style-impact" id="styleImpactBox">
+            <div class="style-impact-topline">
+              <span>Style Impact</span>
+              <span class="style-impact-pill" id="resultImpactLabel">Partial Style Match</span>
+            </div>
+            <p id="resultImpactNote">
+              Some of the top-ranked items align with the selected style preference, while the final order still reflects the overall recommendation score.
+            </p>
+          </div>
+
           <div class="result-facts">
             <div>
               <span>Age Group</span>
@@ -228,6 +248,10 @@
             <div>
               <span>Derived Trend Score</span>
               <strong id="resultScore">0.90</strong>
+            </div>
+            <div>
+              <span>Style Preference</span>
+              <strong id="resultStyle">No specific preference</strong>
             </div>
           </div>
 
