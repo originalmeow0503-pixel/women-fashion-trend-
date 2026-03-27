@@ -276,6 +276,7 @@ function initHomePage() {
   renderAgeShowcase();
   renderOccasionShowcase();
   renderShop();
+  initFashionChatbot();
 }
 
 function initHomeHeroSlider() {
@@ -745,6 +746,132 @@ function renderShop() {
     element.addEventListener("input", render);
     element.addEventListener("change", render);
   });
+}
+
+function initFashionChatbot() {
+  const launcher = document.getElementById("chatbotLauncher");
+  const panel = document.getElementById("chatbotPanel");
+  const form = document.getElementById("chatbotForm");
+  const input = document.getElementById("chatbotInput");
+  const messages = document.getElementById("chatbotMessages");
+  const clearButton = document.getElementById("chatbotClear");
+  const quickActions = document.getElementById("chatbotQuickActions");
+  const typing = document.getElementById("chatbotTyping");
+  const welcomeMessage = "Hi, I can help with college, office, party, wedding, and colour-based outfit suggestions.";
+
+  if (!launcher || !panel || !form || !input || !messages || !clearButton || !quickActions || !typing) return;
+
+  const setChatbotOpen = (isOpen) => {
+    panel.hidden = !isOpen;
+    launcher.setAttribute("aria-expanded", String(isOpen));
+    if (isOpen) {
+      window.setTimeout(() => input.focus(), 40);
+    }
+  };
+
+  const appendChatMessage = (role, text) => {
+    const article = document.createElement("article");
+    article.className = `chatbot-message chatbot-message-${role}`;
+    article.innerHTML = `<p>${escapeHtml(text)}</p>`;
+    messages.appendChild(article);
+    messages.scrollTop = messages.scrollHeight;
+  };
+
+  const resetChatbot = () => {
+    messages.innerHTML = "";
+    appendChatMessage("assistant", welcomeMessage);
+    typing.hidden = true;
+    input.value = "";
+  };
+
+  const sendChatMessage = (text) => {
+    const cleanText = text.trim();
+    if (!cleanText) return;
+
+    appendChatMessage("user", cleanText);
+    input.value = "";
+    typing.hidden = false;
+    messages.scrollTop = messages.scrollHeight;
+
+    window.setTimeout(() => {
+      typing.hidden = true;
+      appendChatMessage("assistant", getChatbotReply(cleanText));
+    }, 320);
+  };
+
+  launcher.addEventListener("click", () => {
+    setChatbotOpen(panel.hidden);
+  });
+
+  clearButton.addEventListener("click", resetChatbot);
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    sendChatMessage(input.value);
+  });
+
+  quickActions.addEventListener("click", (event) => {
+    const action = event.target.closest("[data-prompt]");
+    if (!action) return;
+    if (panel.hidden) setChatbotOpen(true);
+    sendChatMessage(action.dataset.prompt || "");
+  });
+
+  resetChatbot();
+}
+
+const CHATBOT_RULES = [
+  {
+    pattern: /(college|campus|class)/,
+    reply: "For college wear, keep it simple: easy tops, denims, co-ords, or light kurtis.",
+  },
+  {
+    pattern: /(party|evening|night out)/,
+    reply: "For party wear, fitted dresses, statement tops, or clean co-ord sets are a good start.",
+  },
+  {
+    pattern: /(office|work|formal)/,
+    reply: "For office outfits, try structured tops, trousers, blazers, or refined kurtis in cleaner colours.",
+  },
+  {
+    pattern: /(wedding|bridal|ceremony)/,
+    reply: "For wedding looks, sarees, ethnic sets, and embellished festive pieces fit best in this project.",
+  },
+  {
+    pattern: /(teen|teenage|young girl|college girl)/,
+    reply: "For teenage girls, casual tops, easy dresses, and lighter separates usually feel most natural.",
+  },
+  {
+    pattern: /(married women|married|family occasion)/,
+    reply: "For married women, festive kurtis, sarees, and ethnic sets often appear as stronger matches.",
+  },
+  {
+    pattern: /(soft neutrals|neutral|beige|cream|nude)/,
+    reply: "Soft neutrals work well when you want a calm look with beige, cream, off-white, or nude tones.",
+  },
+  {
+    pattern: /(bold colours|bold|bright|vibrant|red|pink)/,
+    reply: "Bold colours are useful when you want more energy, especially for party or festive looks.",
+  },
+  {
+    pattern: /(festive|ethnic|traditional)/,
+    reply: "For festive styles, embroidered kurtis, ethnic sets, and traditional wear are a safe direction.",
+  },
+];
+
+function getChatbotReply(message) {
+  const text = String(message || "").toLowerCase();
+  const matchedRule = CHATBOT_RULES.find((rule) => rule.pattern.test(text));
+
+  if (/(hello|hi|hey)/.test(text)) {
+    return "Hi, tell me the occasion or colour direction and I will suggest a simple starting point.";
+  }
+
+  if (matchedRule) {
+    return `${matchedRule.reply} You can also compare it with the Trend Finder above.`;
+  }
+
+  return "Try asking about college wear, office outfits, wedding styles, soft neutrals, or bold colours.";
 }
 
 function initCartPage() {
