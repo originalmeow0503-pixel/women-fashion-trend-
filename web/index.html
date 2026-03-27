@@ -19,14 +19,11 @@
 <body data-page="home">
   <div class="page-glow page-glow-left"></div>
   <div class="page-glow page-glow-right"></div>
+  <div class="home-topbar">Women’s fashion trend project with exported recommendation results</div>
 
   <header class="site-header">
     <a class="brand" href="./index.html">
-      <span class="brand-mark">TM</span>
-      <span class="brand-copy">
-        <strong>TrendMuse</strong>
-        <small>Fashion Trend Project</small>
-      </span>
+      <img class="brand-logo" src="assets/branding/women-fashion-trends-logo.png" alt="Women Fashion Trends">
     </a>
 
     <nav class="site-nav">
@@ -45,134 +42,150 @@
   </header>
 
   <main>
-    <section class="hero section" id="home">
-      <div class="hero-copy reveal">
-        <p class="eyebrow">KNN Trend Explorer</p>
-        <h1>Explore the strongest style patterns in the exported fashion dataset.</h1>
-        <p class="hero-text">
-          TrendMuse is the website layer for my final-year project. The notebook cleans a women’s
-          fashion dataset, derives proxy trend labels from engineered features, trains a KNN classifier,
-          and exports the results as JSON so the interface can run on GitHub Pages without a backend.
+    <section class="home-hero" id="home">
+      <div class="home-hero-slider">
+        <img src="assets/old-project/hover1.png" alt="Fashion rail editorial scene" class="home-hero-image active">
+        <img src="assets/old-project/hover2.jpg" alt="Warm editorial campaign styling" class="home-hero-image">
+        <img src="assets/old-project/hover3.webp" alt="Neutral luxury campaign styling" class="home-hero-image">
+      </div>
+      <div class="home-hero-overlay"></div>
+
+      <div class="home-hero-content-box reveal">
+        <p class="home-hero-brand">Women Fashion Trends</p>
+        <h1>Style recommendations presented through a fashion storefront layout.</h1>
+        <p class="home-hero-description">
+          This homepage keeps the same exported KNN recommendation feature, but it is now presented
+          with the visual structure and editorial feel of the older fashion website you shared.
         </p>
-
-        <div class="hero-actions">
-          <a class="button button-primary" href="#discover">Open Trend Finder</a>
-          <a class="button button-secondary" href="#shop">Browse Products</a>
+        <div class="hero-actions home-hero-actions">
+          <a class="button button-primary" href="#discover">See Trend Match</a>
+          <a class="button button-secondary" href="#shop">Shop Recommendations</a>
         </div>
-
-        <div class="hero-tags">
+        <div class="hero-tags home-hero-tags">
           <span>Derived trend labels</span>
-          <span>Age and occasion rules</span>
           <span>Static JSON demo</span>
+          <span>Age and occasion filters</span>
         </div>
-
         <div class="runtime-notice" id="runtimeNotice" hidden></div>
       </div>
 
-      <div class="hero-visual reveal">
-        <article class="floating-card floating-card-main">
-          <img
-            id="heroImage"
-            src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80"
-            alt="Featured fashion look"
-          >
-          <div class="floating-card-copy">
-            <p>Top Trending Category</p>
-            <h2 id="heroCategory">Tops</h2>
+      <article class="home-hero-insight reveal">
+        <img
+          id="heroImage"
+          src="assets/old-project/model1.png"
+          alt="Featured fashion look"
+        >
+        <div class="home-hero-insight-copy">
+          <p>Top Trending Category</p>
+          <h2 id="heroCategory">Awaiting Data</h2>
+        </div>
+      </article>
+
+      <div class="home-hero-pagination" aria-label="Hero slides">
+        <button class="pagination-bar active" type="button" aria-label="Hero slide 1"></button>
+        <button class="pagination-bar" type="button" aria-label="Hero slide 2"></button>
+        <button class="pagination-bar" type="button" aria-label="Hero slide 3"></button>
+      </div>
+    </section>
+
+    <section class="section home-editorial-section reveal">
+      <div class="grid-3 home-grid-3">
+        <article class="home-editorial-card">
+          <div class="product-img-wrapper">
+            <img src="assets/old-project/model1.png" alt="Soft tailoring editorial card">
+          </div>
+          <div class="product-info">
+            <h3>Soft Tailoring</h3>
+            <p class="price">Clean portrait styling inspired by the original storefront.</p>
           </div>
         </article>
 
-        <article class="floating-card floating-card-small top">
-          <img
-            src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=700&q=80"
-            alt="Fashion editorial look"
-          >
-          <div class="badge">Party Edit</div>
+        <article class="home-editorial-card">
+          <div class="product-img-wrapper">
+            <img src="assets/old-project/model2.png" alt="Neutral edit editorial card">
+          </div>
+          <div class="product-info">
+            <h3>Neutral Edit</h3>
+            <p class="price">Warm studio tones and elevated basics across the homepage.</p>
+          </div>
         </article>
 
-        <article class="floating-card floating-card-small bottom">
-          <img
-            src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=700&q=80"
-            alt="Modern women's clothing styling"
-          >
-          <div class="badge">Daily Trend Feed</div>
+        <article class="home-editorial-card">
+          <div class="product-img-wrapper">
+            <img src="assets/old-project/model3.png" alt="Monochrome editorial card">
+          </div>
+          <div class="product-info">
+            <h3>Statement Contrast</h3>
+            <p class="price">Sharper fashion imagery while the recommendation system stays intact.</p>
+          </div>
         </article>
       </div>
     </section>
 
     <section class="section reveal">
-      <div class="section-heading">
+      <div class="products-header home-products-header">
         <p class="eyebrow">Project Snapshot</p>
-        <h2>How notebook outputs are presented in the website</h2>
+        <h2>Notebook outputs translated into a storefront-style layout</h2>
       </div>
 
-      <div class="metric-grid">
-        <article class="metric-card">
+      <div class="home-metric-grid">
+        <article class="home-metric-card">
           <span>Dataset</span>
           <strong id="metricDataset">Fashion Dataset.csv</strong>
           <p>Kaggle product dataset used as the starting point for cleaning and feature engineering.</p>
         </article>
-        <article class="metric-card">
+        <article class="home-metric-card">
           <span>Validation Accuracy (Derived Labels)</span>
           <strong id="metricAccuracy">--</strong>
-          <p>Measured against derived trend labels created from rating, popularity, price, and style rules.</p>
+          <p>Measured against engineered trend labels, not customer ground-truth labels.</p>
         </article>
-        <article class="metric-card">
+        <article class="home-metric-card">
           <span>Best K</span>
           <strong id="metricK">--</strong>
-          <p>Selected during grid search in the notebook training pipeline.</p>
+          <p>Chosen during model selection in the notebook pipeline.</p>
         </article>
-        <article class="metric-card">
+        <article class="home-metric-card">
           <span>Top Trend</span>
-          <strong id="metricTrend">Tops</strong>
-          <p>Highest-scoring category in the exported recommendation set used by the frontend.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Short context section to make the project safer to explain in a viva. -->
-    <section class="section reveal">
-      <div class="context-grid">
-        <article class="context-card">
-          <p class="eyebrow">Project Method</p>
-          <h2>What this project does</h2>
-          <ul class="context-list">
-            <li>I cleaned the Kaggle dataset and parsed `p_attributes` into usable fashion features.</li>
-            <li>I derived `age_group`, `occasion`, `trend_score`, and `trend_label` using rules and scoring logic.</li>
-            <li>I trained a KNN classifier offline and exported the model outputs as static JSON files.</li>
-            <li>This website reads those exports and presents them as a shopping-style frontend.</li>
-          </ul>
-        </article>
-
-        <article class="context-card">
-          <p class="eyebrow">Limitations</p>
-          <h2>What this demo does not claim</h2>
-          <ul class="context-list">
-            <li>`trend_label` is an engineered proxy target, not a real customer ground-truth label.</li>
-            <li>`age_group` and some `occasion` values are inferred from product text and attributes.</li>
-            <li>The website is a static demo of exported notebook results, not a live production system.</li>
-            <li>Popularity is approximated using product ratings and rating count because transaction data is not available.</li>
-          </ul>
+          <strong id="metricTrend">--</strong>
+          <p>Highest-scoring category from the exported recommendation data.</p>
         </article>
       </div>
     </section>
 
     <section class="section reveal">
-      <div class="section-heading">
+      <div class="featured-banner home-featured-banner">
+        <img src="assets/old-project/feature.png" alt="Feature banner" class="featured-banner-img">
+        <div class="featured-box home-featured-box">
+          <p class="cloth-name">Recommendation Feature</p>
+          <h2>The website looks like the older fashion storefront, while still using the same exported KNN recommendation flow.</h2>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#discover">Try Trend Match</a>
+            <a class="button button-secondary" href="#shop">Browse Results</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="products-header home-products-header">
         <p class="eyebrow">Trending Section</p>
-        <h2>High-performing products from the model export</h2>
+        <h2>Recommended products from the export</h2>
       </div>
-      <div class="product-grid featured-grid" id="featuredGrid"></div>
+      <div class="product-grid featured-grid home-old-grid" id="featuredGrid"></div>
+    </section>
+
+    <section class="big-text-section reveal">
+      <h2>WEAR YOUR STORY</h2>
     </section>
 
     <section class="section reveal" id="discover">
-      <div class="section-heading">
+      <div class="products-header home-products-header">
         <p class="eyebrow">Trend Finder</p>
-        <h2>Select an audience profile to view the closest exported style match</h2>
+        <h2>Choose age group and occasion to see the closest recommendation match</h2>
       </div>
 
-      <div class="discover-layout">
-        <form class="selector-card" id="profileForm">
+      <div class="discover-layout home-discover-layout">
+        <form class="selector-card home-selector-card" id="profileForm">
           <label>
             Age Group
             <select id="ageSelect"></select>
@@ -185,14 +198,14 @@
 
           <button class="button button-primary" type="submit">Show Trend Match</button>
 
-          <div class="selector-notes">
+          <div class="selector-notes home-selector-notes">
             <p><strong>Prediction target:</strong> derived `trend_label` classes</p>
-            <p><strong>Website behavior:</strong> reads precomputed JSON exports</p>
-            <p><strong>ML method:</strong> KNN similarity-based classification</p>
+            <p><strong>Website behavior:</strong> reads exported JSON results</p>
+            <p><strong>Model used:</strong> KNN similarity-based classification</p>
           </div>
         </form>
 
-        <article class="result-card">
+        <article class="result-card home-result-card">
           <div class="result-topline">
             <span>Recommended Style</span>
             <span class="pill" id="resultPill">High Trend</span>
@@ -223,29 +236,120 @@
       </div>
     </section>
 
-    <section class="section reveal" id="age-edit">
-      <div class="section-heading">
-        <p class="eyebrow">Age-Group-Based Recommendations</p>
-        <h2>Fashion direction by life-stage segment</h2>
+    <section class="review-section project-notes-section reveal">
+      <h2 class="section-title text-center">Project Notes</h2>
+      <div class="marquee-container">
+        <div class="marquee-track">
+          <article class="review-card project-note-card">
+            <div class="review-content">
+              <div class="review-header">
+                <div class="note-icon">01</div>
+                <div class="review-meta">
+                  <h4>Derived Labels</h4>
+                  <div class="stars">METHOD NOTE</div>
+                </div>
+              </div>
+              <p class="review-text">`trend_label` is engineered from scoring rules, so the metric should be explained as accuracy on derived labels.</p>
+            </div>
+            <img src="assets/old-project/grid4img1.webp" alt="Project note visual" class="bought-item-img">
+          </article>
+
+          <article class="review-card project-note-card">
+            <div class="review-content">
+              <div class="review-header">
+                <div class="note-icon">02</div>
+                <div class="review-meta">
+                  <h4>Static Demo</h4>
+                  <div class="stars">DEPLOYMENT NOTE</div>
+                </div>
+              </div>
+              <p class="review-text">The site reads precomputed JSON files, so it works on GitHub Pages without a live Python backend.</p>
+            </div>
+            <img src="assets/old-project/grid4img2.jpg" alt="Project note visual" class="bought-item-img">
+          </article>
+
+          <article class="review-card project-note-card">
+            <div class="review-content">
+              <div class="review-header">
+                <div class="note-icon">03</div>
+                <div class="review-meta">
+                  <h4>KNN Choice</h4>
+                  <div class="stars">MODEL NOTE</div>
+                </div>
+              </div>
+              <p class="review-text">KNN was chosen because it is easier to explain, similarity-based, and suitable for a student project demonstration.</p>
+            </div>
+            <img src="assets/old-project/grid4img3.jpg" alt="Project note visual" class="bought-item-img">
+          </article>
+
+          <article class="review-card project-note-card">
+            <div class="review-content">
+              <div class="review-header">
+                <div class="note-icon">04</div>
+                <div class="review-meta">
+                  <h4>Local Preview</h4>
+                  <div class="stars">TESTING NOTE</div>
+                </div>
+              </div>
+              <p class="review-text">To match GitHub Pages locally, the `web/` folder should be served through localhost instead of opening the HTML file directly.</p>
+            </div>
+            <img src="assets/old-project/grid4img4.webp" alt="Project note visual" class="bought-item-img">
+          </article>
+
+          <article class="review-card project-note-card">
+            <div class="review-content">
+              <div class="review-header">
+                <div class="note-icon">01</div>
+                <div class="review-meta">
+                  <h4>Derived Labels</h4>
+                  <div class="stars">METHOD NOTE</div>
+                </div>
+              </div>
+              <p class="review-text">`trend_label` is engineered from scoring rules, so the metric should be explained as accuracy on derived labels.</p>
+            </div>
+            <img src="assets/old-project/grid4img1.webp" alt="Project note visual" class="bought-item-img">
+          </article>
+
+          <article class="review-card project-note-card">
+            <div class="review-content">
+              <div class="review-header">
+                <div class="note-icon">02</div>
+                <div class="review-meta">
+                  <h4>Static Demo</h4>
+                  <div class="stars">DEPLOYMENT NOTE</div>
+                </div>
+              </div>
+              <p class="review-text">The site reads precomputed JSON files, so it works on GitHub Pages without a live Python backend.</p>
+            </div>
+            <img src="assets/old-project/grid4img2.jpg" alt="Project note visual" class="bought-item-img">
+          </article>
+        </div>
       </div>
-      <div class="showcase-grid" id="ageRecommendationGrid"></div>
+    </section>
+
+    <section class="section reveal" id="age-edit">
+      <div class="products-header home-products-header">
+        <p class="eyebrow">Age Edit</p>
+        <h2>Recommendations grouped by age segment</h2>
+      </div>
+      <div class="showcase-grid home-old-grid" id="ageRecommendationGrid"></div>
     </section>
 
     <section class="section reveal" id="occasion-edit">
-      <div class="section-heading">
-        <p class="eyebrow">Occasion-Wise Recommendations</p>
-        <h2>What performs best for each styling moment</h2>
+      <div class="products-header home-products-header">
+        <p class="eyebrow">Occasion Edit</p>
+        <h2>Recommendations grouped by occasion</h2>
       </div>
-      <div class="showcase-grid" id="occasionRecommendationGrid"></div>
+      <div class="showcase-grid home-old-grid" id="occasionRecommendationGrid"></div>
     </section>
 
     <section class="section reveal" id="shop">
-      <div class="section-heading">
-        <p class="eyebrow">Shop The Trends</p>
-        <h2>Search and filter the exported recommendation set</h2>
+      <div class="products-header home-products-header">
+        <p class="eyebrow">Shop</p>
+        <h2>Search and filter the recommendation catalogue</h2>
       </div>
 
-      <div class="toolbar">
+      <div class="toolbar home-toolbar">
         <label class="toolbar-field toolbar-search">
           <span>Search</span>
           <input id="searchInput" type="search" placeholder="Search by style, brand, or product name">
@@ -277,22 +381,30 @@
       </div>
 
       <div class="section-meta" id="shopMeta">Showing 0 products</div>
-      <div class="product-grid" id="shopGrid"></div>
+      <div class="product-grid home-old-grid" id="shopGrid"></div>
+    </section>
+
+    <section class="big-text-section reveal">
+      <h2>STYLE WITH CONTEXT</h2>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div>
-      <strong>TrendMuse</strong>
-      <p>
-        Static frontend for a women’s fashion trend project built with Python, Jupyter Notebook,
-        KNN, HTML, CSS, JavaScript, and exported JSON files.
-      </p>
-    </div>
-    <div class="footer-links">
-      <a href="./index.html">Home</a>
-      <a href="./cart.html">Cart</a>
-      <a href="./checkout.html">Checkout</a>
+  <footer class="site-footer home-site-footer">
+    <div class="home-footer-grid">
+      <div class="home-footer-col">
+        <h3>Project Contact</h3>
+        <p>This storefront-style homepage presents exported recommendation outputs from the notebook.</p>
+        <p class="home-footer-small">Preview locally through `http://localhost:8000` for the correct JSON-powered view.</p>
+      </div>
+      <div class="home-footer-col">
+        <h3>Quick Links</h3>
+        <div class="home-social-links">
+          <a href="#discover">Trend Finder</a>
+          <a href="#age-edit">Age Edit</a>
+          <a href="#occasion-edit">Occasion Edit</a>
+          <a href="#shop">Shop</a>
+        </div>
+      </div>
     </div>
   </footer>
 

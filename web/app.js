@@ -218,12 +218,39 @@ function formatCurrency(value) {
 }
 
 function initHomePage() {
+  initHomeHeroSlider();
   renderMetrics();
   renderFeatured();
   renderProfileControls();
   renderAgeShowcase();
   renderOccasionShowcase();
   renderShop();
+}
+
+function initHomeHeroSlider() {
+  const slides = Array.from(document.querySelectorAll(".home-hero-image"));
+  const bars = Array.from(document.querySelectorAll(".pagination-bar"));
+  if (slides.length < 2) return;
+
+  let activeIndex = 0;
+
+  const setActiveSlide = (index) => {
+    activeIndex = index;
+    slides.forEach((slide, slideIndex) => {
+      slide.classList.toggle("active", slideIndex === index);
+    });
+    bars.forEach((bar, barIndex) => {
+      bar.classList.toggle("active", barIndex === index);
+    });
+  };
+
+  bars.forEach((bar, index) => {
+    bar.addEventListener("click", () => setActiveSlide(index));
+  });
+
+  window.setInterval(() => {
+    setActiveSlide((activeIndex + 1) % slides.length);
+  }, 3600);
 }
 
 function renderMetrics() {
