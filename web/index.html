@@ -19,7 +19,7 @@
 <body data-page="home">
   <div class="page-glow page-glow-left"></div>
   <div class="page-glow page-glow-right"></div>
-  <div class="home-topbar">Women’s fashion trend & recommendation results</div>
+  <div class="home-topbar">Women’s fashion trend & recommendation project</div>
 
   <header class="site-header">
     <a class="brand" href="./index.html">
@@ -27,10 +27,10 @@
     </a>
 
     <nav class="site-nav">
-      <a href="#discover">Discover</a>
-      <a href="#age-edit">Age Edit</a>
-      <a href="#occasion-edit">Occasion Edit</a>
-      <a href="#shop">Shop</a>
+      <a href="./index.html" aria-current="page">Home</a>
+      <a href="./women.html">Women</a>
+      <a href="./men.html">Men</a>
+      <a href="./new-arrival.html">New Arrivals</a>
       <a href="./cart.html">Cart</a>
       <a href="./checkout.html">Checkout</a>
     </nav>
@@ -52,19 +52,18 @@
 
       <div class="home-hero-content-box reveal">
         <p class="home-hero-brand">Women Fashion Trends</p>
-        <h1> We present to you .</h1>
+        <h1>Explore the project through linked fashion pages.</h1>
         <p class="home-hero-description">
-          This homepage keeps the same exported KNN recommendation feature, but it is now presented
-          with the visual structure and editorial feel of the older fashion website you shared.
+          The landing page now introduces the project, while the full data-driven trend finder lives on the Women page with the same exported KNN recommendation flow.
         </p>
         <div class="hero-actions home-hero-actions">
-          <a class="button button-primary" href="#discover">See Trend Match</a>
-          <a class="button button-secondary" href="#shop">Shop Recommendations</a>
+          <a class="button button-primary" href="./women.html#discover">Open Women Trend Finder</a>
+          <a class="button button-secondary" href="./new-arrival.html">Browse New Arrivals</a>
         </div>
         <div class="hero-tags home-hero-tags">
           <span>Derived trend labels</span>
           <span>Static JSON demo</span>
-          <span>Age and occasion filters</span>
+          <span>Linked multi-page flow</span>
         </div>
         <div class="runtime-notice" id="runtimeNotice" hidden></div>
       </div>
@@ -90,42 +89,42 @@
 
     <section class="section home-editorial-section reveal">
       <div class="grid-3 home-grid-3">
-        <article class="home-editorial-card">
+        <a class="home-editorial-card page-link-card" href="./women.html">
           <div class="product-img-wrapper">
-            <img src="assets/old-project/model1.png" alt="Soft tailoring editorial card">
+            <img src="assets/old-project/model1.png" alt="Women page preview">
           </div>
           <div class="product-info">
-            <h3>Soft Tailoring</h3>
-            <p class="price">Clean portrait styling inspired by the original storefront.</p>
+            <h3>Women Page</h3>
+            <p class="price">The complete prediction module, style impact view, and exported recommendation cards.</p>
           </div>
-        </article>
+        </a>
 
-        <article class="home-editorial-card">
+        <a class="home-editorial-card page-link-card" href="./men.html">
           <div class="product-img-wrapper">
-            <img src="assets/old-project/model2.png" alt="Neutral edit editorial card">
+            <img src="assets/old-project/model2.png" alt="Men page preview">
           </div>
           <div class="product-info">
-            <h3>Neutral Edit</h3>
-            <p class="price">Warm studio tones and elevated basics across the homepage.</p>
+            <h3>Men Page</h3>
+            <p class="price">A linked collection page using the older storefront layout as reference.</p>
           </div>
-        </article>
+        </a>
 
-        <article class="home-editorial-card">
+        <a class="home-editorial-card page-link-card" href="./new-arrival.html">
           <div class="product-img-wrapper">
-            <img src="assets/old-project/model3.png" alt="Monochrome editorial card">
+            <img src="assets/old-project/model3.png" alt="New arrivals page preview">
           </div>
           <div class="product-info">
-            <h3>Statement Contrast</h3>
-            <p class="price">Sharper fashion imagery while the recommendation system stays intact.</p>
+            <h3>New Arrivals</h3>
+            <p class="price">A separate arrivals view that stays visually aligned with the rest of the site.</p>
           </div>
-        </article>
+        </a>
       </div>
     </section>
 
     <section class="section reveal">
       <div class="products-header home-products-header">
         <p class="eyebrow">Project Snapshot</p>
-        <h2>Notebook outputs translated into a storefront-style layout</h2>
+        <h2>Notebook outputs now connect into a cleaner page-based experience</h2>
       </div>
 
       <div class="home-metric-grid">
@@ -156,108 +155,18 @@
       <div class="featured-banner home-featured-banner">
         <img src="assets/old-project/feature.png" alt="Feature banner" class="featured-banner-img">
         <div class="featured-box home-featured-box">
-          <p class="cloth-name">Recommendation Feature</p>
-          <h2>The website looks like the older fashion storefront, while still using the same exported KNN recommendation flow.</h2>
+          <p class="cloth-name">Women Page Focus</p>
+          <h2>The AI-backed trend finder now has its own dedicated page, while the homepage stays cleaner and easier to present.</h2>
           <div class="hero-actions">
-            <a class="button button-primary" href="#discover">Try Trend Match</a>
-            <a class="button button-secondary" href="#shop">Browse Results</a>
+            <a class="button button-primary" href="./women.html#discover">Go To Women Page</a>
+            <a class="button button-secondary" href="./men.html">Open Men Edit</a>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section reveal">
-      <div class="products-header home-products-header">
-        <p class="eyebrow">Trending Section</p>
-        <h2>Recommended products from the export</h2>
-      </div>
-      <div class="product-grid featured-grid home-old-grid" id="featuredGrid"></div>
-    </section>
-
     <section class="big-text-section reveal">
       <h2>WEAR YOUR STORY</h2>
-    </section>
-
-    <section class="section reveal" id="discover">
-      <div class="products-header home-products-header">
-        <p class="eyebrow">Trend Finder</p>
-        <h2>Choose age group and occasion to see the closest recommendation match</h2>
-      </div>
-
-      <div class="discover-layout home-discover-layout">
-        <form class="selector-card home-selector-card" id="profileForm">
-          <label>
-            Age Group
-            <select id="ageSelect"></select>
-          </label>
-
-          <label>
-            Occasion
-            <select id="occasionSelect"></select>
-          </label>
-
-          <label>
-            Clothing Category
-            <select id="categorySelect"></select>
-          </label>
-
-          <label>
-            Style Preference
-            <select id="stylePreference"></select>
-          </label>
-
-          <button class="button button-primary" type="submit">Predict Trend Match</button>
-
-          <div class="selector-notes home-selector-notes">
-            <p><strong>Prediction target:</strong> derived `trend_label` classes</p>
-            <p><strong>Website behavior:</strong> reads exported JSON results</p>
-            <p><strong>Model used:</strong> KNN similarity-based classification</p>
-          </div>
-        </form>
-
-        <article class="result-card home-result-card">
-          <div class="result-topline">
-            <span>Recommended Style</span>
-            <span class="pill" id="resultPill">High Trend</span>
-          </div>
-
-          <h3 id="resultCategory">Tops</h3>
-          <p id="resultSummary">
-            This recommendation comes from the exported notebook output for the selected profile.
-          </p>
-
-          <div class="style-impact" id="styleImpactBox">
-            <div class="style-impact-topline">
-              <span>Style Impact</span>
-              <span class="style-impact-pill" id="resultImpactLabel">Partial Style Match</span>
-            </div>
-            <p id="resultImpactNote">
-              Some of the top-ranked items align with the selected style preference, while the final order still reflects the overall recommendation score.
-            </p>
-          </div>
-
-          <div class="result-facts">
-            <div>
-              <span>Age Group</span>
-              <strong id="resultAge">Teen Girls (13-19)</strong>
-            </div>
-            <div>
-              <span>Occasion</span>
-              <strong id="resultOccasion">Casual</strong>
-            </div>
-            <div>
-              <span>Derived Trend Score</span>
-              <strong id="resultScore">0.90</strong>
-            </div>
-            <div>
-              <span>Style Preference</span>
-              <strong id="resultStyle">No specific preference</strong>
-            </div>
-          </div>
-
-          <div class="mini-grid" id="predictionProducts"></div>
-        </article>
-      </div>
     </section>
 
     <section class="review-section project-notes-section reveal">
@@ -301,7 +210,7 @@
                   <div class="stars">MODEL NOTE</div>
                 </div>
               </div>
-              <p class="review-text">KNN was chosen because it is easier to explain, similarity-based, and suitable for a student project demonstration.</p>
+              <p class="review-text">KNN stays in place because it is easier to explain, similarity-based, and suitable for a student project demonstration.</p>
             </div>
             <img src="assets/old-project/grid4img3.jpg" alt="Project note visual" class="bought-item-img">
           </article>
@@ -311,11 +220,11 @@
               <div class="review-header">
                 <div class="note-icon">04</div>
                 <div class="review-meta">
-                  <h4>Local Preview</h4>
-                  <div class="stars">TESTING NOTE</div>
+                  <h4>Linked Pages</h4>
+                  <div class="stars">STRUCTURE NOTE</div>
                 </div>
               </div>
-              <p class="review-text">To match GitHub Pages locally, the `web/` folder should be served through localhost instead of opening the HTML file directly.</p>
+              <p class="review-text">The old project is only being used as a page-layout reference, while the current logic remains the source of truth.</p>
             </div>
             <img src="assets/old-project/grid4img4.webp" alt="Project note visual" class="bought-item-img">
           </article>
@@ -333,83 +242,8 @@
             </div>
             <img src="assets/old-project/grid4img1.webp" alt="Project note visual" class="bought-item-img">
           </article>
-
-          <article class="review-card project-note-card">
-            <div class="review-content">
-              <div class="review-header">
-                <div class="note-icon">02</div>
-                <div class="review-meta">
-                  <h4>Static Demo</h4>
-                  <div class="stars">DEPLOYMENT NOTE</div>
-                </div>
-              </div>
-              <p class="review-text">The site reads precomputed JSON files, so it works on GitHub Pages without a live Python backend.</p>
-            </div>
-            <img src="assets/old-project/grid4img2.jpg" alt="Project note visual" class="bought-item-img">
-          </article>
         </div>
       </div>
-    </section>
-
-    <section class="section reveal" id="age-edit">
-      <div class="products-header home-products-header">
-        <p class="eyebrow">Age Edit</p>
-        <h2>Recommendations grouped by age segment</h2>
-      </div>
-      <div class="showcase-grid home-old-grid" id="ageRecommendationGrid"></div>
-    </section>
-
-    <section class="section reveal" id="occasion-edit">
-      <div class="products-header home-products-header">
-        <p class="eyebrow">Occasion Edit</p>
-        <h2>Recommendations grouped by occasion</h2>
-      </div>
-      <div class="showcase-grid home-old-grid" id="occasionRecommendationGrid"></div>
-    </section>
-
-    <section class="section reveal" id="shop">
-      <div class="products-header home-products-header">
-        <p class="eyebrow">Shop</p>
-        <h2>Search and filter the recommendation catalogue</h2>
-      </div>
-
-      <div class="toolbar home-toolbar">
-        <label class="toolbar-field toolbar-search">
-          <span>Search</span>
-          <input id="searchInput" type="search" placeholder="Search by style, brand, or product name">
-        </label>
-
-        <label class="toolbar-field">
-          <span>Age Group</span>
-          <select id="ageFilter">
-            <option value="all">All age groups</option>
-          </select>
-        </label>
-
-        <label class="toolbar-field">
-          <span>Occasion</span>
-          <select id="occasionFilter">
-            <option value="all">All occasions</option>
-          </select>
-        </label>
-
-        <label class="toolbar-field">
-          <span>Sort</span>
-          <select id="sortFilter">
-            <option value="trend_desc">Trend score: high to low</option>
-            <option value="price_asc">Price: low to high</option>
-            <option value="price_desc">Price: high to low</option>
-            <option value="rating_desc">Rating: high to low</option>
-          </select>
-        </label>
-      </div>
-
-      <div class="section-meta" id="shopMeta">Showing 0 products</div>
-      <div class="product-grid home-old-grid" id="shopGrid"></div>
-    </section>
-
-    <section class="big-text-section reveal">
-      <h2>STYLE WITH CONTEXT</h2>
     </section>
   </main>
 
@@ -417,16 +251,16 @@
     <div class="home-footer-grid">
       <div class="home-footer-col">
         <h3>Project Contact</h3>
-        <p>This storefront-style homepage presents exported recommendation outputs from the notebook.</p>
+        <p>This landing page now introduces the project, while the Women page carries the full prediction and recommendation experience.</p>
         <p class="home-footer-small">Preview locally through `http://localhost:8000` for the correct JSON-powered view.</p>
       </div>
       <div class="home-footer-col">
         <h3>Quick Links</h3>
         <div class="home-social-links">
-          <a href="#discover">Trend Finder</a>
-          <a href="#age-edit">Age Edit</a>
-          <a href="#occasion-edit">Occasion Edit</a>
-          <a href="#shop">Shop</a>
+          <a href="./women.html">Women</a>
+          <a href="./men.html">Men</a>
+          <a href="./new-arrival.html">New Arrivals</a>
+          <a href="./cart.html">Cart</a>
         </div>
       </div>
     </div>

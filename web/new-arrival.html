@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrendMuse | New Arrivals</title>
+  <meta
+    name="description"
+    content="A linked new arrivals page that follows the same fashion-site design language."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Sora:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="new-arrival">
+  <div class="page-glow page-glow-left"></div>
+  <div class="page-glow page-glow-right"></div>
+  <div class="home-topbar">A linked arrivals page using the older storefront structure as reference</div>
+
+  <header class="site-header">
+    <a class="brand" href="./index.html">
+      <img class="brand-logo" src="assets/branding/women-fashion-trends-logo.png" alt="Women Fashion Trends">
+    </a>
+
+    <nav class="site-nav">
+      <a href="./index.html">Home</a>
+      <a href="./women.html">Women</a>
+      <a href="./men.html">Men</a>
+      <a href="./new-arrival.html" aria-current="page">New Arrivals</a>
+      <a href="./cart.html">Cart</a>
+      <a href="./checkout.html">Checkout</a>
+    </nav>
+
+    <a class="cart-link" href="./cart.html" aria-label="Open shopping cart">
+      Cart
+      <span class="cart-count" id="cartCount">0</span>
+    </a>
+  </header>
+
+  <main>
+    <section class="section page-intro reveal">
+      <p class="eyebrow">New Arrivals</p>
+      <h1>Fresh product stories in the same site-wide visual language</h1>
+      <p>
+        This page is based on the older linked-page structure, but it stays inside the current project’s shared styling so the site feels like one connected experience.
+      </p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="./women.html#shop">Go To Women Shop</a>
+        <a class="button button-secondary" href="./women.html#discover">Use Trend Finder</a>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="featured-banner">
+        <img src="assets/old-project/hover3.webp" alt="New arrivals banner" class="featured-banner-img">
+        <div class="featured-box">
+          <p class="cloth-name">Collection Entry</p>
+          <h2>A separate arrivals page makes the site easier to present without moving the live predictor off the Women page.</h2>
+          <p class="hero-text">
+            The recommendation system remains in one dedicated place, while this page helps the site feel more like a connected storefront.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="products-header">
+        <p class="eyebrow">Arrivals Edit</p>
+        <h2>New arrivals referenced from the older project</h2>
+      </div>
+      <div class="product-grid">
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1520975916090-3105956dac38" alt="Oversized hoodie">
+          <div class="product-copy">
+            <div class="product-meta"><span>New</span><span>Casual</span></div>
+            <h3>Oversized Hoodie</h3>
+            <p>A soft casual arrival that keeps the page approachable and presentation-friendly.</p>
+            <div class="product-footer">
+              <span class="price-line">Arrival Edit</span>
+              <a class="button button-secondary" href="./women.html#shop">See Women Shop</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb" alt="Street style jacket">
+          <div class="product-copy">
+            <div class="product-meta"><span>New</span><span>Outerwear</span></div>
+            <h3>Street Style Jacket</h3>
+            <p>A sharper arrival card that mirrors the older new-arrivals page layout without mixing codebases.</p>
+            <div class="product-footer">
+              <span class="price-line">Arrival Edit</span>
+              <a class="button button-secondary" href="./women.html#discover">Trend Finder</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d" alt="Classic denim">
+          <div class="product-copy">
+            <div class="product-meta"><span>New</span><span>Daily Wear</span></div>
+            <h3>Classic Denim</h3>
+            <p>A simpler everyday arrival that supports the catalogue feel of the linked page.</p>
+            <div class="product-footer">
+              <span class="price-line">Arrival Edit</span>
+              <a class="button button-secondary" href="./cart.html">Open Cart</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552" alt="Summer dress">
+          <div class="product-copy">
+            <div class="product-meta"><span>New</span><span>Dress</span></div>
+            <h3>Summer Dress</h3>
+            <p>A lighter editorial card that keeps the page visually close to the rest of the project.</p>
+            <div class="product-footer">
+              <span class="price-line">Arrival Edit</span>
+              <a class="button button-secondary" href="./checkout.html">Checkout</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="context-grid">
+        <article class="context-card">
+          <p class="eyebrow">Why This Page Exists</p>
+          <h2>Cleaner structure for presentation</h2>
+          <ul class="context-list">
+            <li>The homepage now works as a landing page instead of carrying every section.</li>
+            <li>The Women page keeps the full interactive logic in one place.</li>
+            <li>This arrivals page helps the site feel more complete without touching the prediction engine.</li>
+          </ul>
+        </article>
+        <article class="context-card">
+          <p class="eyebrow">How To Use It</p>
+          <h2>Move between discovery and shopping views</h2>
+          <ul class="context-list">
+            <li>Use this page for linked collection browsing.</li>
+            <li>Use the Women page when you want the age, occasion, category, and style-based prediction workflow.</li>
+            <li>The chatbot remains available here too for a consistent lightweight helper.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <p>This page reuses the current project’s shared styling while following the older arrivals-page structure more closely.</p>
+    </div>
+    <div class="footer-links">
+      <a href="./index.html">Home</a>
+      <a href="./women.html">Women</a>
+      <a href="./men.html">Men</a>
+      <a href="./cart.html">Cart</a>
+    </div>
+  </footer>
+
+  <button
+    class="chatbot-launcher"
+    id="chatbotLauncher"
+    type="button"
+    aria-expanded="false"
+    aria-controls="chatbotPanel"
+  >
+    Style Help
+  </button>
+
+  <aside class="chatbot-panel" id="chatbotPanel" hidden>
+    <div class="chatbot-header">
+      <div>
+        <p class="chatbot-kicker">Quick Help</p>
+        <h3>Fashion Assistant</h3>
+      </div>
+      <button class="chatbot-clear" id="chatbotClear" type="button">Clear</button>
+    </div>
+
+    <div class="chatbot-messages" id="chatbotMessages">
+      <article class="chatbot-message chatbot-message-assistant">
+        <p>
+          Hi, I can help with college, office, party, wedding, and colour-based outfit suggestions.
+        </p>
+      </article>
+    </div>
+
+    <div class="chatbot-quick-actions" id="chatbotQuickActions">
+      <button type="button" data-prompt="Suggest college wear">College wear</button>
+      <button type="button" data-prompt="Suggest party wear">Party wear</button>
+      <button type="button" data-prompt="Suggest office outfits">Office outfits</button>
+      <button type="button" data-prompt="Suggest wedding outfits">Wedding outfits</button>
+      <button type="button" data-prompt="Soft neutrals">Soft neutrals</button>
+      <button type="button" data-prompt="Bold colours">Bold colours</button>
+    </div>
+
+    <div class="chatbot-typing" id="chatbotTyping" hidden>Thinking...</div>
+
+    <form class="chatbot-form" id="chatbotForm">
+      <input
+        id="chatbotInput"
+        type="text"
+        placeholder="Ask for a simple styling suggestion"
+        autocomplete="off"
+      >
+      <button class="chatbot-send" type="submit">Send</button>
+    </form>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>

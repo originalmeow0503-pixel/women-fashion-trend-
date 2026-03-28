@@ -430,6 +430,17 @@ body[data-page="home"] .home-result-card {
   gap: 28px;
 }
 
+.page-link-card {
+  display: block;
+  color: inherit;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.page-link-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+}
+
 .home-editorial-section {
   padding-top: 8px;
 }
@@ -841,6 +852,11 @@ body[data-page="home"] .site-header {
   color: var(--muted);
   font-size: 0.94rem;
   transition: color 0.2s ease;
+}
+
+.site-nav a[aria-current="page"] {
+  color: var(--text);
+  font-weight: 600;
 }
 
 .site-nav a:hover,

@@ -22,9 +22,11 @@
     </a>
 
     <nav class="site-nav">
-      <a href="./index.html#discover">Discover</a>
-      <a href="./index.html#shop">Shop</a>
-      <a href="./cart.html">Cart</a>
+      <a href="./index.html">Home</a>
+      <a href="./women.html">Women</a>
+      <a href="./men.html">Men</a>
+      <a href="./new-arrival.html">New Arrivals</a>
+      <a href="./cart.html" aria-current="page">Cart</a>
       <a href="./checkout.html">Checkout</a>
     </nav>
 
@@ -65,7 +67,7 @@
           <strong>Free</strong>
         </div>
         <a class="button button-primary button-full" href="./checkout.html">Proceed To Checkout</a>
-        <a class="button button-secondary button-full" href="./index.html#shop">Continue Shopping</a>
+        <a class="button button-secondary button-full" href="./women.html#shop">Continue Shopping</a>
       </aside>
     </section>
 
@@ -84,9 +86,59 @@
     </div>
     <div class="footer-links">
       <a href="./index.html">Home</a>
+      <a href="./women.html">Women</a>
       <a href="./checkout.html">Checkout</a>
     </div>
   </footer>
+
+  <button
+    class="chatbot-launcher"
+    id="chatbotLauncher"
+    type="button"
+    aria-expanded="false"
+    aria-controls="chatbotPanel"
+  >
+    Style Help
+  </button>
+
+  <aside class="chatbot-panel" id="chatbotPanel" hidden>
+    <div class="chatbot-header">
+      <div>
+        <p class="chatbot-kicker">Quick Help</p>
+        <h3>Fashion Assistant</h3>
+      </div>
+      <button class="chatbot-clear" id="chatbotClear" type="button">Clear</button>
+    </div>
+
+    <div class="chatbot-messages" id="chatbotMessages">
+      <article class="chatbot-message chatbot-message-assistant">
+        <p>
+          Hi, I can help with college, office, party, wedding, and colour-based outfit suggestions.
+        </p>
+      </article>
+    </div>
+
+    <div class="chatbot-quick-actions" id="chatbotQuickActions">
+      <button type="button" data-prompt="Suggest college wear">College wear</button>
+      <button type="button" data-prompt="Suggest party wear">Party wear</button>
+      <button type="button" data-prompt="Suggest office outfits">Office outfits</button>
+      <button type="button" data-prompt="Suggest wedding outfits">Wedding outfits</button>
+      <button type="button" data-prompt="Soft neutrals">Soft neutrals</button>
+      <button type="button" data-prompt="Bold colours">Bold colours</button>
+    </div>
+
+    <div class="chatbot-typing" id="chatbotTyping" hidden>Thinking...</div>
+
+    <form class="chatbot-form" id="chatbotForm">
+      <input
+        id="chatbotInput"
+        type="text"
+        placeholder="Ask for a simple styling suggestion"
+        autocomplete="off"
+      >
+      <button class="chatbot-send" type="submit">Send</button>
+    </form>
+  </aside>
 
   <script src="app.js"></script>
 </body>

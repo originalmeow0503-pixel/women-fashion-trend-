@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrendMuse | Women Page</title>
+  <meta
+    name="description"
+    content="The women page contains the complete trend finder, style impact view, and exported recommendation results."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Sora:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="women">
+  <div class="page-glow page-glow-left"></div>
+  <div class="page-glow page-glow-right"></div>
+  <div class="home-topbar">Women’s trend finder and exported recommendations</div>
+
+  <header class="site-header">
+    <a class="brand" href="./index.html">
+      <img class="brand-logo" src="assets/branding/women-fashion-trends-logo.png" alt="Women Fashion Trends">
+    </a>
+
+    <nav class="site-nav">
+      <a href="./index.html">Home</a>
+      <a href="./women.html" aria-current="page">Women</a>
+      <a href="./men.html">Men</a>
+      <a href="./new-arrival.html">New Arrivals</a>
+      <a href="./cart.html">Cart</a>
+      <a href="./checkout.html">Checkout</a>
+    </nav>
+
+    <a class="cart-link" href="./cart.html" aria-label="Open shopping cart">
+      Cart
+      <span class="cart-count" id="cartCount">0</span>
+    </a>
+  </header>
+
+  <main>
+    <section class="section page-intro reveal">
+      <p class="eyebrow">Women Page</p>
+      <h1>The complete women’s trend prediction view</h1>
+      <p>
+        This page preserves the working AI prediction flow, style impact logic, recommendation cards, and filters from the current project while using the multi-page structure inspired by the older storefront reference.
+      </p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="#discover">Open Trend Finder</a>
+        <a class="button button-secondary" href="#shop">Browse Shop Results</a>
+      </div>
+      <div class="runtime-notice" id="runtimeNotice" hidden></div>
+    </section>
+
+    <section class="section reveal">
+      <div class="featured-banner">
+        <img src="assets/old-project/feature.png" alt="Women page fashion feature" class="featured-banner-img">
+        <div class="featured-box">
+          <p class="cloth-name">Prediction Module</p>
+          <h2>Age group, occasion, category, and style preference stay connected to the same exported recommendation logic.</h2>
+          <p class="hero-text">
+            Nothing in the recommendation engine is being replaced here. The main change is structural: the full women-facing predictor now has a dedicated page.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-heading compact">
+        <p class="eyebrow">Project Snapshot</p>
+        <h2>Key model outputs used by the frontend</h2>
+      </div>
+      <div class="metric-grid">
+        <article class="metric-card">
+          <span>Dataset</span>
+          <strong id="metricDataset">Fashion Dataset.csv</strong>
+          <p>Kaggle product dataset used as the basis for cleaning, feature engineering, and the exported demo output.</p>
+        </article>
+        <article class="metric-card">
+          <span>Validation Accuracy (Derived Labels)</span>
+          <strong id="metricAccuracy">--</strong>
+          <p>This metric is based on engineered labels, not real customer ground-truth labels.</p>
+        </article>
+        <article class="metric-card">
+          <span>Best K</span>
+          <strong id="metricK">--</strong>
+          <p>The selected K value from the notebook pipeline used to export the current results.</p>
+        </article>
+        <article class="metric-card">
+          <span>Top Trend</span>
+          <strong id="metricTrend">--</strong>
+          <p>The highest-scoring category currently surfaced from the exported recommendation set.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="products-header">
+        <p class="eyebrow">Trending Section</p>
+        <h2>Recommended products from the export</h2>
+      </div>
+      <div class="product-grid featured-grid" id="featuredGrid"></div>
+    </section>
+
+    <section class="section reveal" id="discover">
+      <div class="products-header">
+        <p class="eyebrow">Trend Finder</p>
+        <h2>Choose age group and occasion to see the closest recommendation match</h2>
+      </div>
+
+      <div class="discover-layout">
+        <form class="selector-card" id="profileForm">
+          <label>
+            Age Group
+            <select id="ageSelect"></select>
+          </label>
+
+          <label>
+            Occasion
+            <select id="occasionSelect"></select>
+          </label>
+
+          <label>
+            Clothing Category
+            <select id="categorySelect"></select>
+          </label>
+
+          <label>
+            Style Preference
+            <select id="stylePreference"></select>
+          </label>
+
+          <button class="button button-primary" type="submit">Predict Trend Match</button>
+
+          <div class="selector-notes">
+            <p><strong>Prediction target:</strong> derived `trend_label` classes</p>
+            <p><strong>Website behavior:</strong> reads exported JSON results</p>
+            <p><strong>Model used:</strong> KNN similarity-based classification</p>
+          </div>
+        </form>
+
+        <article class="result-card" id="profileResultCard">
+          <div class="result-topline">
+            <span>Recommended Style</span>
+            <span class="pill" id="resultPill">High Trend</span>
+          </div>
+
+          <h3 id="resultCategory">Tops</h3>
+          <p id="resultSummary">
+            This recommendation comes from the exported notebook output for the selected profile.
+          </p>
+
+          <div class="style-impact" id="styleImpactBox">
+            <div class="style-impact-topline">
+              <span>Style Impact</span>
+              <span class="style-impact-pill" id="resultImpactLabel">Partial Style Match</span>
+            </div>
+            <p id="resultImpactNote">
+              Some of the top-ranked items align with the selected style preference, while the final order still reflects the overall recommendation score.
+            </p>
+          </div>
+
+          <div class="result-facts">
+            <div>
+              <span>Age Group</span>
+              <strong id="resultAge">Teen Girls (13-19)</strong>
+            </div>
+            <div>
+              <span>Occasion</span>
+              <strong id="resultOccasion">Casual</strong>
+            </div>
+            <div>
+              <span>Derived Trend Score</span>
+              <strong id="resultScore">0.90</strong>
+            </div>
+            <div>
+              <span>Style Preference</span>
+              <strong id="resultStyle">No specific preference</strong>
+            </div>
+          </div>
+
+          <div class="mini-grid" id="predictionProducts"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="context-grid">
+        <article class="context-card">
+          <p class="eyebrow">Project Method</p>
+          <h2>How the women page stays safe</h2>
+          <ul class="context-list">
+            <li>The same `app.js` render functions are still driving the inputs, result card, style impact, and recommendation list.</li>
+            <li>The DOM IDs used by the current predictor were moved intact so the logic did not need a heavy rewrite.</li>
+            <li>The old project is only informing the page-based structure, not replacing the current recommendation system.</li>
+          </ul>
+        </article>
+        <article class="context-card">
+          <p class="eyebrow">Project Limits</p>
+          <h2>What this page does not claim</h2>
+          <ul class="context-list">
+            <li>`trend_label` is an engineered proxy target, not a real customer ground-truth label.</li>
+            <li>The site is a static frontend connected to exported notebook results, not a live production backend.</li>
+            <li>Age-group and occasion matching come from the exported data already prepared in the notebook.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="age-edit">
+      <div class="products-header">
+        <p class="eyebrow">Age Edit</p>
+        <h2>Recommendations grouped by age segment</h2>
+      </div>
+      <div class="showcase-grid" id="ageRecommendationGrid"></div>
+    </section>
+
+    <section class="section reveal" id="occasion-edit">
+      <div class="products-header">
+        <p class="eyebrow">Occasion Edit</p>
+        <h2>Recommendations grouped by occasion</h2>
+      </div>
+      <div class="showcase-grid" id="occasionRecommendationGrid"></div>
+    </section>
+
+    <section class="section reveal" id="shop">
+      <div class="products-header">
+        <p class="eyebrow">Shop</p>
+        <h2>Search and filter the recommendation catalogue</h2>
+      </div>
+
+      <div class="toolbar">
+        <label class="toolbar-field toolbar-search">
+          <span>Search</span>
+          <input id="searchInput" type="search" placeholder="Search by style, brand, or product name">
+        </label>
+
+        <label class="toolbar-field">
+          <span>Age Group</span>
+          <select id="ageFilter">
+            <option value="all">All age groups</option>
+          </select>
+        </label>
+
+        <label class="toolbar-field">
+          <span>Occasion</span>
+          <select id="occasionFilter">
+            <option value="all">All occasions</option>
+          </select>
+        </label>
+
+        <label class="toolbar-field">
+          <span>Sort</span>
+          <select id="sortFilter">
+            <option value="trend_desc">Trend score: high to low</option>
+            <option value="price_asc">Price: low to high</option>
+            <option value="price_desc">Price: high to low</option>
+            <option value="rating_desc">Rating: high to low</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="section-meta" id="shopMeta">Showing 0 products</div>
+      <div class="product-grid" id="shopGrid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <p>The Women page keeps the full prediction flow together in one place for presentation and testing.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#discover">Trend Finder</a>
+      <a href="#age-edit">Age Edit</a>
+      <a href="#occasion-edit">Occasion Edit</a>
+      <a href="#shop">Shop</a>
+    </div>
+  </footer>
+
+  <button
+    class="chatbot-launcher"
+    id="chatbotLauncher"
+    type="button"
+    aria-expanded="false"
+    aria-controls="chatbotPanel"
+  >
+    Style Help
+  </button>
+
+  <aside class="chatbot-panel" id="chatbotPanel" hidden>
+    <div class="chatbot-header">
+      <div>
+        <p class="chatbot-kicker">Quick Help</p>
+        <h3>Fashion Assistant</h3>
+      </div>
+      <button class="chatbot-clear" id="chatbotClear" type="button">Clear</button>
+    </div>
+
+    <div class="chatbot-messages" id="chatbotMessages">
+      <article class="chatbot-message chatbot-message-assistant">
+        <p>
+          Hi, I can help with college, office, party, wedding, and colour-based outfit suggestions.
+        </p>
+      </article>
+    </div>
+
+    <div class="chatbot-quick-actions" id="chatbotQuickActions">
+      <button type="button" data-prompt="Suggest college wear">College wear</button>
+      <button type="button" data-prompt="Suggest party wear">Party wear</button>
+      <button type="button" data-prompt="Suggest office outfits">Office outfits</button>
+      <button type="button" data-prompt="Suggest wedding outfits">Wedding outfits</button>
+      <button type="button" data-prompt="Soft neutrals">Soft neutrals</button>
+      <button type="button" data-prompt="Bold colours">Bold colours</button>
+    </div>
+
+    <div class="chatbot-typing" id="chatbotTyping" hidden>Thinking...</div>
+
+    <form class="chatbot-form" id="chatbotForm">
+      <input
+        id="chatbotInput"
+        type="text"
+        placeholder="Ask for a simple styling suggestion"
+        autocomplete="off"
+      >
+      <button class="chatbot-send" type="submit">Send</button>
+    </form>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>

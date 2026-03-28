@@ -77,11 +77,15 @@ async function init() {
   const page = document.body.dataset.page;
   if (page === "home") {
     initHomePage();
+  } else if (page === "women") {
+    initWomenPage();
   } else if (page === "cart") {
     initCartPage();
   } else if (page === "checkout") {
     initCheckoutPage();
   }
+
+  initFashionChatbot();
 
   bindGlobalEvents();
 }
@@ -271,12 +275,15 @@ function formatCurrency(value) {
 function initHomePage() {
   initHomeHeroSlider();
   renderMetrics();
+}
+
+function initWomenPage() {
+  renderMetrics();
   renderFeatured();
   renderProfileControls();
   renderAgeShowcase();
   renderOccasionShowcase();
   renderShop();
-  initFashionChatbot();
 }
 
 function initHomeHeroSlider() {
@@ -484,7 +491,7 @@ function renderProfileResult(ageGroup, occasion, category, stylePreference) {
   setText("resultStyle", styleConfig.label);
   setStyleImpactIndicator(styleImpact);
 
-  const resultCard = document.querySelector(".home-result-card");
+  const resultCard = document.getElementById("profileResultCard") || document.querySelector(".result-card");
   if (resultCard) resultCard.hidden = false;
 
   const container = document.getElementById("predictionProducts");
@@ -868,7 +875,7 @@ function getChatbotReply(message) {
   }
 
   if (matchedRule) {
-    return `${matchedRule.reply} You can also compare it with the Trend Finder above.`;
+    return `${matchedRule.reply} You can also compare it with the Women page trend finder.`;
   }
 
   return "Try asking about college wear, office outfits, wedding styles, soft neutrals, or bold colours.";
@@ -894,7 +901,7 @@ function renderCartPage() {
       <article class="empty-card">
         <h3>Your cart is empty</h3>
         <p>Add products from the homepage to continue your fashion checkout flow.</p>
-        <a class="button button-primary" href="./index.html#shop">Start Shopping</a>
+        <a class="button button-primary" href="./women.html#shop">Start Shopping</a>
       </article>
     `;
     return;
@@ -933,7 +940,7 @@ function renderCheckoutSummary() {
     container.innerHTML = `
       <article class="empty-card">
         <p>No items are in the cart yet.</p>
-        <a class="button button-secondary" href="./index.html#shop">Go Back To Shop</a>
+        <a class="button button-secondary" href="./women.html#shop">Go Back To Shop</a>
       </article>
     `;
     return;
