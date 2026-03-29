@@ -1,5 +1,9 @@
 const STORAGE_KEY = "trendmuse_cart_v1";
 const DEFAULT_PRODUCT_IMAGE = "assets/images/hero-banner.svg";
+const LOCAL_API_BASE_URL = "http://127.0.0.1:5000";
+const PREDICTION_API_BASE_URL = ["localhost", "127.0.0.1"].includes(window.location.hostname)
+  ? LOCAL_API_BASE_URL
+  : "";
 const STYLE_PREFERENCE_CONFIG = {
   no_preference: {
     label: "No specific preference",
@@ -396,8 +400,8 @@ function renderProfileControls() {
     populateCategoryOptions(ageSelect.value, occasionSelect.value, categorySelect.value);
   };
 
-  const updateProfileResult = () => {
-    renderProfileResult(
+  const updateProfileResult = async () => {
+    await requestProfileResult(
       ageSelect.value,
       occasionSelect.value,
       categorySelect.value,
@@ -408,9 +412,9 @@ function renderProfileControls() {
   syncCategoryOptions();
   updateProfileResult();
 
-  profileForm.addEventListener("submit", (event) => {
+  profileForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    updateProfileResult();
+    await updateProfileResult();
   });
 
   [ageSelect, occasionSelect].forEach((element) => {
@@ -423,6 +427,85 @@ function renderProfileControls() {
   [categorySelect, stylePreferenceSelect].forEach((element) => {
     element.addEventListener("change", updateProfileResult);
   });
+}
+
+async function requestProfileResult(ageGroup, occasion, category, stylePreference) {
+  const apiResponse = await fetchPredictionFromApi({
+    ageGroup,
+    occasion,
+    category,
+    stylePreference,
+  });
+
+  if (apiResponse) {
+    renderProfileResultFromApi(apiResponse, ageGroup, occasion);
+    return;
+  }
+
+  renderProfileResult(ageGroup, occasion, category, stylePreference);
+}
+
+async function fetchPredictionFromApi(payload) {
+  if (!PREDICTION_API_BASE_URL) return null;
+
+  try {
+    const response = await fetch(`${PREDICTION_API_BASE_URL}/predict`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error("Prediction API request failed");
+    }
+
+    return await response.json();
+  } catch (error) {
+    return null;
+  }
+}
+
+function renderProfileResultFromApi(result, ageGroup, occasion) {
+  const products = Array.isArray(result?.products) ? result.products : [];
+  const score = typeof result?.score === "number" ? result.score.toFixed(3) : "--";
+  const styleImpact = {
+    label: result?.style_impact || "Assisted Ranking",
+    note: result?.style_impact_note || "The result follows the current ranking flow for this profile.",
+    tone: getStyleImpactTone(result?.style_impact),
+  };
+
+  setText("resultPill", getTrendLabelFromScore(Number(result?.score || 0)));
+  setText("resultCategory", result?.recommended_style || "Style Match");
+  setText("resultSummary", result?.summary || "This recommendation comes from the backend API response.");
+  setText("resultAge", ageGroup || "--");
+  setText("resultOccasion", occasion || "--");
+  setText("resultScore", score);
+  setText("resultStyle", result?.style_preference || "No specific preference");
+  setStyleImpactIndicator(styleImpact);
+
+  const resultCard = document.getElementById("profileResultCard") || document.querySelector(".result-card");
+  if (resultCard) resultCard.hidden = false;
+
+  const container = document.getElementById("predictionProducts");
+  if (container) {
+    container.innerHTML = products.length
+      ? products.map((product) => createMiniCard(product, ageGroup, occasion)).join("")
+      : createEmptyStateCard("No products match the selected profile.");
+  }
+}
+
+function getTrendLabelFromScore(score) {
+  if (score >= 0.75) return "High Trend";
+  if (score >= 0.55) return "Rising Trend";
+  return "Niche Trend";
+}
+
+function getStyleImpactTone(label) {
+  if (label === "Strong Style Match") return "strong";
+  if (label === "Partial Style Match") return "partial";
+  return "fallback";
 }
 
 function populateCategoryOptions(ageGroup, occasion, selectedCategory = "") {

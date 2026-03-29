@@ -7,3 +7,5 @@ streamlit
 joblib
 jupyter
 notebook
+Flask
+flask-cors
