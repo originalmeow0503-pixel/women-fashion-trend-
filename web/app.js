@@ -74,6 +74,10 @@ const CHATBOT_CATEGORY_RULES = [
   { category: "Bottom Wear", pattern: /(bottom|bottoms|jeans|trousers|pants|palazzo|palazzos|skirt|skirts)/, fallbackCategories: ["Bottom Wear", "Co-ord Sets"] },
   { category: "Traditional Wear", pattern: /(traditional wear|traditional|ethnic wear)/, fallbackCategories: ["Traditional Wear", "Ethnic Sets", "Sarees"] },
 ];
+const CHATBOT_GENDER_RULES = [
+  { gender: "men", pattern: /\b(men|man|male|boy|boys|groom|husband)\b/ },
+  { gender: "women", pattern: /\b(women|woman|female|girl|girls|lady|ladies|bride)\b/ },
+];
 const CHATBOT_STOPWORDS = new Set([
   "a",
   "an",
@@ -1089,6 +1093,7 @@ function parseChatbotIntent(message) {
   const normalizedMessage = String(message || "").toLowerCase();
   const occasionRule = CHATBOT_OCCASION_RULES.find((rule) => rule.pattern.test(normalizedMessage));
   const categoryRule = CHATBOT_CATEGORY_RULES.find((rule) => rule.pattern.test(normalizedMessage));
+  const genderRule = CHATBOT_GENDER_RULES.find((rule) => rule.pattern.test(normalizedMessage));
   const stylePreference = getChatbotStylePreferenceKey(normalizedMessage);
 
   return {
@@ -1096,6 +1101,7 @@ function parseChatbotIntent(message) {
     occasion: occasionRule?.occasion || "",
     category: categoryRule?.category || "",
     categoryFallbacks: categoryRule?.fallbackCategories || [],
+    gender: genderRule?.gender || "",
     stylePreference,
     styleConfig: getStylePreferenceConfig(stylePreference),
     keywords: extractChatbotKeywords(normalizedMessage),
@@ -1145,7 +1151,14 @@ function buildChatbotResponse(message) {
 }
 
 function getChatbotRecommendations(intent) {
-  const catalog = state.recommendations.length ? state.recommendations : state.sampleProducts;
+  const catalog = state.productCatalog.length
+    ? state.productCatalog
+    : [
+        ...state.recommendations,
+        ...state.sampleProducts,
+        ...STATIC_MEN_PRODUCTS.map(normalizeProduct),
+        ...STATIC_NEW_ARRIVAL_PRODUCTS.map(normalizeProduct),
+      ];
   if (!catalog.length) {
     return { products: [], usedCategoryFallback: false };
   }
@@ -1173,10 +1186,43 @@ function getChatbotRecommendations(intent) {
     }
   }
 
+  if (intent.gender === "men") {
+    const menMatches = pool.filter(isMenProduct);
+    if (menMatches.length) {
+      pool = menMatches;
+    }
+  } else if (intent.gender === "women") {
+    const womenMatches = pool.filter((product) => !isMenProduct(product));
+    if (womenMatches.length) {
+      pool = womenMatches;
+    }
+  }
+
+  const rankedProducts = rankChatbotProducts(pool, intent);
+
   return {
-    products: rankChatbotProducts(pool, intent).slice(0, 3),
+    products: selectChatbotProducts(rankedProducts, intent),
     usedCategoryFallback,
   };
+}
+
+function isMenProduct(product) {
+  return /\bmen\b/i.test(String(product?.age_group || ""));
+}
+
+function selectChatbotProducts(products, intent) {
+  if (intent.gender) {
+    return products.slice(0, 3);
+  }
+
+  const menProducts = products.filter(isMenProduct).slice(0, 2);
+  const womenProducts = products.filter((product) => !isMenProduct(product)).slice(0, 2);
+
+  if (menProducts.length && womenProducts.length) {
+    return [womenProducts[0], menProducts[0], womenProducts[1], menProducts[1]].filter(Boolean);
+  }
+
+  return products.slice(0, 4);
 }
 
 function rankChatbotProducts(products, intent) {
@@ -1223,34 +1269,57 @@ function buildChatbotRecommendationText(intent, recommendationResult) {
   const styleSuffix = intent.stylePreference !== "no_preference"
     ? ` with a ${intent.styleConfig.label.toLowerCase()} feel`
     : "";
+  const audienceLabel = intent.gender === "men"
+    ? "men"
+    : intent.gender === "women"
+      ? "women"
+      : "men and women";
+  const pageSuffix = intent.gender === "men"
+    ? " Click any image to open it on the Men page."
+    : intent.gender === "women"
+      ? " Click any image to open it on the right Women or New In page."
+      : " Click any image to open it on the right Men, Women, or New In page.";
 
   if (intent.occasion && intent.category && usedCategoryFallback) {
-    return `I could not find exact ${intent.category.toLowerCase()} for ${intent.occasion.toLowerCase()} in the current catalog, so here are the closest ${intent.occasion.toLowerCase()} picks${styleSuffix}. Click any image to open it in the Women shop page.`;
+    return `I could not find exact ${intent.category.toLowerCase()} for ${intent.occasion.toLowerCase()} for ${audienceLabel} in the current catalog, so here are the closest ${intent.occasion.toLowerCase()} picks${styleSuffix}.${pageSuffix}`;
   }
 
   if (intent.occasion && intent.category) {
-    return `Here are ${products.length} ${intent.occasion.toLowerCase()} ${intent.category.toLowerCase()} picks from your website${styleSuffix}. Click any image to open it in the Women shop page.`;
+    return `Here are ${products.length} ${intent.occasion.toLowerCase()} ${intent.category.toLowerCase()} picks for ${audienceLabel} from your website${styleSuffix}.${pageSuffix}`;
   }
 
   if (intent.occasion) {
-    return `Here are ${products.length} ${intent.occasion.toLowerCase()} recommendations from your website${styleSuffix}. Click any image to open it in the Women shop page.`;
+    return `Here are ${products.length} ${intent.occasion.toLowerCase()} recommendations for ${audienceLabel} from your website${styleSuffix}.${pageSuffix}`;
   }
 
   if (intent.category) {
-    return `Here are ${products.length} ${intent.category.toLowerCase()} picks from your website${styleSuffix}. Click any image to open it in the Women shop page.`;
+    return `Here are ${products.length} ${intent.category.toLowerCase()} picks for ${audienceLabel} from your website${styleSuffix}.${pageSuffix}`;
   }
 
-  return `Here are ${products.length} style picks from your website${styleSuffix}. Click any image to open it in the Women shop page.`;
+  return `Here are ${products.length} style picks for ${audienceLabel} from your website${styleSuffix}.${pageSuffix}`;
 }
 
 function buildChatbotShopUrl(product) {
   const safeProduct = normalizeProduct(product);
+  if (String(safeProduct.product_id || "").startsWith("men-")) {
+    return "./men.html";
+  }
+  if (String(safeProduct.product_id || "").startsWith("new-")) {
+    return "./new-arrival.html";
+  }
   const params = new URLSearchParams();
   params.set("search", safeProduct.name || "");
   if (safeProduct.age_group) params.set("age", safeProduct.age_group);
   if (safeProduct.occasion) params.set("occasion", safeProduct.occasion);
   params.set("sort", "trend_desc");
   return `./women.html?${params.toString()}#shop`;
+}
+
+function getChatbotProductDestinationLabel(product) {
+  const productId = String(product?.product_id || "");
+  if (productId.startsWith("men-")) return "Open on Men page";
+  if (productId.startsWith("new-")) return "Open on New In page";
+  return "Open in Women shop";
 }
 
 function createChatbotProductCardMarkup(product) {
@@ -1262,7 +1331,7 @@ function createChatbotProductCardMarkup(product) {
         <strong>${escapeHtml(safeProduct.name)}</strong>
         <span>${escapeHtml(safeProduct.category || "Style")} • ${formatCurrency(safeProduct.price)}</span>
         <span>${escapeHtml(safeProduct.occasion || "Occasion")} • ${escapeHtml(safeProduct.brand || "Fashion Brand")}</span>
-        <em>Open in Women shop</em>
+        <em>${escapeHtml(getChatbotProductDestinationLabel(safeProduct))}</em>
       </span>
     </a>
   `;
@@ -1277,7 +1346,7 @@ function initFashionChatbot() {
   const clearButton = document.getElementById("chatbotClear");
   const quickActions = document.getElementById("chatbotQuickActions");
   const typing = document.getElementById("chatbotTyping");
-  const welcomeMessage = "Hi, ask for wedding, party, office, college, or colour-based outfit ideas and I will show clickable product picks from your website.";
+  const welcomeMessage = "Hi, ask for men, women, or general outfit ideas and I will show clickable product picks from across your website.";
 
   if (!launcher || !panel || !form || !input || !messages || !clearButton || !quickActions || !typing) return;
 
@@ -1413,14 +1482,14 @@ function getChatbotReply(message) {
   const matchedRule = CHATBOT_RULES.find((rule) => rule.pattern.test(text));
 
   if (/(hello|hi|hey)/.test(text)) {
-    return "Hi, tell me the occasion or colour direction and I will suggest a simple starting point.";
+    return "Hi, tell me the gender if you want, or just share the occasion or colour direction and I will suggest options from both men and women collections.";
   }
 
   if (matchedRule) {
     return `${matchedRule.reply} You can also compare it with the Women page trend finder.`;
   }
 
-  return "Try asking about college wear, office outfits, wedding styles, soft neutrals, or bold colours.";
+  return "Try asking about men wedding wear, women party outfits, or just office outfits if you want both men and women options.";
 }
 
 function initCartPage() {
