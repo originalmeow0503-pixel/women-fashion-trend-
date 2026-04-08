@@ -108,6 +108,112 @@ const CHATBOT_STOPWORDS = new Set([
   "wear",
   "with",
 ]);
+const STATIC_MEN_PRODUCTS = [
+  {
+    product_id: "men-structured-blazer",
+    name: "Structured Blazer",
+    brand: "E-SHINE Men",
+    category: "Blazers",
+    age_group: "Men",
+    occasion: "Formal",
+    price: 3299,
+    rating: 4.6,
+    recommendation_score: 0.91,
+    image: "https://www.crimsouneclub.com/cdn/shop/files/UntitledSession03249_1080x.jpg?v=1754568629",
+    description: "Clean tailoring and sharper evening styling from the old project reference.",
+  },
+  {
+    product_id: "men-festive-kurta-set",
+    name: "Festive Kurta Set",
+    brand: "E-SHINE Men",
+    category: "Kurta Sets",
+    age_group: "Men",
+    occasion: "Festive",
+    price: 2899,
+    rating: 4.5,
+    recommendation_score: 0.88,
+    image: "https://medias.utsavfashion.com/media/catalog/product/cache/1/small_image/295x/040ec09b1e35df139433887a97daa66f/w/o/woven-viscose-rayon-jacquard-kurta-set-in-cream-v1-mnr217.jpg",
+    description: "A softer festive direction that mirrors the older catalogue layout without changing the project logic.",
+  },
+  {
+    product_id: "men-wedding-sherwani",
+    name: "Wedding Sherwani",
+    brand: "E-SHINE Men",
+    category: "Sherwanis",
+    age_group: "Men",
+    occasion: "Wedding",
+    price: 8499,
+    rating: 4.8,
+    recommendation_score: 0.94,
+    image: "https://i.etsystatic.com/34650355/r/il/a2ce99/4020929058/il_fullxfull.4020929058_gefl.jpg",
+    description: "Richer ceremonial styling included here to preserve the page variety from the older project.",
+  },
+  {
+    product_id: "men-formal-shirt",
+    name: "Formal Shirt",
+    brand: "E-SHINE Men",
+    category: "Shirts",
+    age_group: "Men",
+    occasion: "Office",
+    price: 1799,
+    rating: 4.4,
+    recommendation_score: 0.84,
+    image: "https://m.media-amazon.com/images/I/41k8b5UDbML._AC_UY1100_.jpg",
+    description: "Simple officewear styling that keeps the page grounded and easy to scan in a presentation.",
+  },
+  {
+    product_id: "men-classic-sherwani",
+    name: "Classic Sherwani",
+    brand: "E-SHINE Men",
+    category: "Sherwanis",
+    age_group: "Men",
+    occasion: "Ceremony",
+    price: 7999,
+    rating: 4.7,
+    recommendation_score: 0.9,
+    image: "https://www.nihalfashions.com/media/catalog/product/cache/caa15edf98145413286703527de7b8dd/l/i/light-brown-art-silk-mens-sherwani-nmk-6875.jpg",
+    description: "A ceremonial reference card that carries the same structured product-grid treatment.",
+  },
+  {
+    product_id: "men-tailored-waistcoat",
+    name: "Tailored Waistcoat",
+    brand: "E-SHINE Men",
+    category: "Waistcoats",
+    age_group: "Men",
+    occasion: "Smart",
+    price: 2599,
+    rating: 4.3,
+    recommendation_score: 0.82,
+    image: "https://static.fursac.com/data/waistcoat-men-3-piece-suit-taupe-brown-g3bilg-gc17-a008-pl3133166.1749824406.jpg",
+    description: "A bridge between formal and occasion dressing, used here as a design reference card.",
+  },
+  {
+    product_id: "men-coat-and-pant",
+    name: "Coat And Pant",
+    brand: "E-SHINE Men",
+    category: "Suits",
+    age_group: "Men",
+    occasion: "Formal",
+    price: 4199,
+    rating: 4.5,
+    recommendation_score: 0.86,
+    image: "https://i.pinimg.com/originals/51/39/51/5139510b643681466e6129df18fe82bf.jpg",
+    description: "The clean storefront presentation is the part being borrowed here, not the older project logic.",
+  },
+  {
+    product_id: "men-formal-pant",
+    name: "Formal Pant",
+    brand: "E-SHINE Men",
+    category: "Trousers",
+    age_group: "Men",
+    occasion: "Workwear",
+    price: 1499,
+    rating: 4.2,
+    recommendation_score: 0.8,
+    image: "https://www.sainly.com/cdn/shop/products/sainly-apparel-accessories-26-men-pants-office-grey-casual-straight-suit-pants-men-s-formal-pants-men-s-dress-party-club-dress-pants-men-office-grey-casual-men-formal-pants-men-party.png?v=1663244657",
+    description: "A quieter wardrobe basic that helps this linked page feel complete without becoming the main feature.",
+  },
+];
 const state = {
   modelSummary: null,
   recommendations: [],
@@ -247,6 +353,13 @@ function buildCatalog() {
         });
       }
     });
+  });
+
+  STATIC_MEN_PRODUCTS.map(normalizeProduct).forEach((product) => {
+    const key = buildProductKey(product);
+    if (!map.has(key)) {
+      map.set(key, { ...product, key });
+    }
   });
 
   state.productMap = map;
