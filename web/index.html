@@ -3,268 +3,139 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrendMuse | Women's Fashion Trend Project</title>
+  <title>E-SHINE</title>
   <meta
     name="description"
-    content="A women's fashion trend project that presents exported KNN notebook results through a static HTML, CSS, and JavaScript website."
+    content="E-SHINE is a luxury fashion homepage with a soft editorial layout, layered cards, and a premium women-focused visual experience."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Sora:wght@300;400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&family=Sora:wght@300;400;500;600;700&display=swap"
     rel="stylesheet"
   >
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="home">
-  <div class="page-glow page-glow-left"></div>
-  <div class="page-glow page-glow-right"></div>
-  <div class="home-topbar">Women’s fashion trend & recommendation project</div>
+  <div class="page-bg">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+    <span class="orb orb-4"></span>
+  </div>
 
-  <header class="site-header">
-    <a class="brand" href="./index.html">
-      <img class="brand-logo" src="assets/branding/women-fashion-trends-logo.png" alt="Women Fashion Trends">
-    </a>
+  <header class="navbar">
+    <div class="logo">E-SHINE</div>
 
-    <nav class="site-nav">
-      <a href="./index.html" aria-current="page">Home</a>
+    <nav class="nav-links">
+      <a href="./new-arrival.html">New In</a>
       <a href="./women.html">Women</a>
-      <a href="./men.html">Men</a>
-      <a href="./new-arrival.html">New Arrivals</a>
-      <a href="./cart.html">Cart</a>
-      <a href="./checkout.html">Checkout</a>
+      <a href="./women.html#shop">Collections</a>
+      <a href="./women.html#discover">Lookbook</a>
     </nav>
 
-    <a class="cart-link" href="./cart.html" aria-label="Open shopping cart">
-      Cart
-      <span class="cart-count" id="cartCount">0</span>
-    </a>
+    <div class="nav-actions">
+      <a href="./women.html#shop">Search</a>
+      <a href="./checkout.html">Account</a>
+      <a class="bag-link" href="./cart.html">
+        Bag
+        <span class="bag-count" id="cartCount">0</span>
+      </a>
+    </div>
   </header>
 
-  <main>
-    <section class="home-hero" id="home">
-      <div class="home-hero-slider">
-        <img src="assets/old-project/hover1.png" alt="Fashion rail editorial scene" class="home-hero-image active">
-        <img src="assets/old-project/hover2.jpg" alt="Warm editorial campaign styling" class="home-hero-image">
-        <img src="assets/old-project/hover3.webp" alt="Neutral luxury campaign styling" class="home-hero-image">
-      </div>
-      <div class="home-hero-overlay"></div>
+  <main class="hero">
+    <section class="hero-left">
+      <p class="eyebrow">Luxury fashion experience</p>
+      <h1>Fashion that feels soft, modern, and expensive.</h1>
+      <p class="hero-text">
+        A premium women’s fashion interface with floating motion, layered cards,
+        elegant typography, and a polished editorial feel.
+      </p>
 
-      <div class="home-hero-content-box reveal">
-        <p class="home-hero-brand">Women Fashion Trends</p>
-        <h1>Explore the project through linked fashion pages.</h1>
-        <p class="home-hero-description">
-          Welcome dear
-        </p>
-        <div class="hero-actions home-hero-actions">
-          <a class="button button-primary" href="./women.html#discover">Open Women Trend Finder</a>
-          <a class="button button-secondary" href="./new-arrival.html">Browse New Arrivals</a>
-        </div>
-        <div class="hero-tags home-hero-tags">
-          <span>Derived trend labels</span>
-          <span>Static JSON demo</span>
-          <span>Linked multi-page flow</span>
-        </div>
-        <div class="runtime-notice" id="runtimeNotice" hidden></div>
+      <div class="hero-buttons">
+        <a href="./women.html#shop" class="btn btn-dark">Explore Collection</a>
+        <a href="./new-arrival.html" class="btn btn-light">View Lookbook</a>
       </div>
 
-      <article class="home-hero-insight reveal">
-        <img
-          id="heroImage"
-          src="assets/old-project/model1.png"
-          alt="Featured fashion look"
-        >
-        <div class="home-hero-insight-copy">
-          <p>Top Trending Category</p>
-          <h2 id="heroCategory">Awaiting Data</h2>
+      <div class="mini-stats">
+        <div>
+          <h3>24K+</h3>
+          <p>Luxury picks</p>
         </div>
-      </article>
-
-      <div class="home-hero-pagination" aria-label="Hero slides">
-        <button class="pagination-bar active" type="button" aria-label="Hero slide 1"></button>
-        <button class="pagination-bar" type="button" aria-label="Hero slide 2"></button>
-        <button class="pagination-bar" type="button" aria-label="Hero slide 3"></button>
+        <div>
+          <h3>150+</h3>
+          <p>Curated edits</p>
+        </div>
+        <div>
+          <h3>4.9</h3>
+          <p>Style rating</p>
+        </div>
       </div>
     </section>
 
-    <section class="section home-editorial-section reveal">
-      <div class="grid-3 home-grid-3">
-        <a class="home-editorial-card page-link-card" href="./women.html">
-          <div class="product-img-wrapper">
-            <img src="assets/old-project/model1.png" alt="Women page preview">
+    <section class="hero-right">
+      <div class="card-stack">
+        <article class="main-card">
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80" alt="Fashion model">
+          <div class="main-card-text">
+            <span>Spring / Summer</span>
+            <h2>Soft tailoring<br>for elevated women</h2>
           </div>
-          <div class="product-info">
-            <h3>Women Page</h3>
-            <p class="price">The complete prediction module, style impact view, and exported recommendation cards.</p>
-          </div>
-        </a>
-
-        <a class="home-editorial-card page-link-card" href="./men.html">
-          <div class="product-img-wrapper">
-            <img src="assets/old-project/model2.png" alt="Men page preview">
-          </div>
-          <div class="product-info">
-            <h3>Men Page</h3>
-            <p class="price">A linked collection page using the older storefront layout as reference.</p>
-          </div>
-        </a>
-
-        <a class="home-editorial-card page-link-card" href="./new-arrival.html">
-          <div class="product-img-wrapper">
-            <img src="assets/old-project/model3.png" alt="New arrivals page preview">
-          </div>
-          <div class="product-info">
-            <h3>New Arrivals</h3>
-            <p class="price">A separate arrivals view that stays visually aligned with the rest of the site.</p>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <section class="section reveal">
-      <div class="products-header home-products-header">
-        <p class="eyebrow">Project Snapshot</p>
-        <h2>Notebook outputs now connect into a cleaner page-based experience</h2>
-      </div>
-
-      <div class="home-metric-grid">
-        <article class="home-metric-card">
-          <span>Dataset</span>
-          <strong id="metricDataset">Fashion Dataset.csv</strong>
-          <p>Kaggle product dataset used as the starting point for cleaning and feature engineering.</p>
         </article>
-        <article class="home-metric-card">
-          <span>Validation Accuracy (Derived Labels)</span>
-          <strong id="metricAccuracy">--</strong>
-          <p>Measured against engineered trend labels, not customer ground-truth labels.</p>
-        </article>
-        <article class="home-metric-card">
-          <span>Best K</span>
-          <strong id="metricK">--</strong>
-          <p>Chosen during model selection in the notebook pipeline.</p>
-        </article>
-        <article class="home-metric-card">
-          <span>Top Trend</span>
-          <strong id="metricTrend">--</strong>
-          <p>Highest-scoring category from the exported recommendation data.</p>
-        </article>
-      </div>
-    </section>
 
-    <section class="section reveal">
-      <div class="featured-banner home-featured-banner">
-        <img src="assets/old-project/feature.png" alt="Feature banner" class="featured-banner-img">
-        <div class="featured-box home-featured-box">
-          <p class="cloth-name">Women Page Focus</p>
-          <h2>The AI-backed trend finder now has its own dedicated page, while the homepage stays cleaner and easier to present.</h2>
-          <div class="hero-actions">
-            <a class="button button-primary" href="./women.html#discover">Go To Women Page</a>
-            <a class="button button-secondary" href="./men.html">Open Men Edit</a>
+        <article class="floating-card small-card top-card">
+          <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=900&q=80" alt="Editorial portrait">
+          <div>
+            <p>New Edit</p>
+            <strong>Minimal Luxe</strong>
           </div>
-        </div>
-      </div>
-    </section>
+        </article>
 
-    <section class="big-text-section reveal">
-      <h2>WEAR YOUR STORY</h2>
-    </section>
-
-    <section class="review-section project-notes-section reveal">
-      <h2 class="section-title text-center">Project Notes</h2>
-      <div class="marquee-container">
-        <div class="marquee-track">
-          <article class="review-card project-note-card">
-            <div class="review-content">
-              <div class="review-header">
-                <div class="note-icon">01</div>
-                <div class="review-meta">
-                  <h4>Derived Labels</h4>
-                  <div class="stars">METHOD NOTE</div>
-                </div>
-              </div>
-              <p class="review-text">`trend_label` is engineered from scoring rules, so the metric should be explained as accuracy on derived labels.</p>
-            </div>
-            <img src="assets/old-project/grid4img1.webp" alt="Project note visual" class="bought-item-img">
-          </article>
-
-          <article class="review-card project-note-card">
-            <div class="review-content">
-              <div class="review-header">
-                <div class="note-icon">02</div>
-                <div class="review-meta">
-                  <h4>Static Demo</h4>
-                  <div class="stars">DEPLOYMENT NOTE</div>
-                </div>
-              </div>
-              <p class="review-text">The site reads precomputed JSON files, so it works on GitHub Pages without a live Python backend.</p>
-            </div>
-            <img src="assets/old-project/grid4img2.jpg" alt="Project note visual" class="bought-item-img">
-          </article>
-
-          <article class="review-card project-note-card">
-            <div class="review-content">
-              <div class="review-header">
-                <div class="note-icon">03</div>
-                <div class="review-meta">
-                  <h4>KNN Choice</h4>
-                  <div class="stars">MODEL NOTE</div>
-                </div>
-              </div>
-              <p class="review-text">KNN stays in place because it is easier to explain, similarity-based, and suitable for a student project demonstration.</p>
-            </div>
-            <img src="assets/old-project/grid4img3.jpg" alt="Project note visual" class="bought-item-img">
-          </article>
-
-          <article class="review-card project-note-card">
-            <div class="review-content">
-              <div class="review-header">
-                <div class="note-icon">04</div>
-                <div class="review-meta">
-                  <h4>Linked Pages</h4>
-                  <div class="stars">STRUCTURE NOTE</div>
-                </div>
-              </div>
-              <p class="review-text">The old project is only being used as a page-layout reference, while the current logic remains the source of truth.</p>
-            </div>
-            <img src="assets/old-project/grid4img4.webp" alt="Project note visual" class="bought-item-img">
-          </article>
-
-          <article class="review-card project-note-card">
-            <div class="review-content">
-              <div class="review-header">
-                <div class="note-icon">01</div>
-                <div class="review-meta">
-                  <h4>Derived Labels</h4>
-                  <div class="stars">METHOD NOTE</div>
-                </div>
-              </div>
-              <p class="review-text">`trend_label` is engineered from scoring rules, so the metric should be explained as accuracy on derived labels.</p>
-            </div>
-            <img src="assets/old-project/grid4img1.webp" alt="Project note visual" class="bought-item-img">
-          </article>
-        </div>
+        <article class="floating-card small-card bottom-card">
+          <div class="trend-chip">Trending Now</div>
+          <h3>Partywear<br>Refined</h3>
+          <p>Metallic accents, monochrome silhouettes, and clean statement dressing.</p>
+        </article>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer home-site-footer">
-    <div class="home-footer-grid">
-      <div class="home-footer-col">
-        <h3>Project Contact</h3>
-        <p>This landing page now introduces the project, while the Women page carries the full prediction and recommendation experience.</p>
-        <p class="home-footer-small">Preview locally through `http://localhost:8000` for the correct JSON-powered view.</p>
+  <section class="featured-grid">
+    <article class="feature-card">
+      <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80" alt="Evening wear">
+      <div class="feature-info">
+        <p>Evening</p>
+        <h3>Luxury Partywear</h3>
       </div>
-      <div class="home-footer-col">
-        <h3>Quick Links</h3>
-        <div class="home-social-links">
-          <a href="./women.html">Women</a>
-          <a href="./men.html">Men</a>
-          <a href="./new-arrival.html">New Arrivals</a>
-          <a href="./cart.html">Cart</a>
-        </div>
+    </article>
+
+    <article class="feature-card">
+      <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=900&q=80" alt="Casual style">
+      <div class="feature-info">
+        <p>Casual</p>
+        <h3>Modern Essentials</h3>
       </div>
-    </div>
-  </footer>
+    </article>
+
+    <article class="feature-card">
+      <img src="https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=900&q=80" alt="Elegant outfit">
+      <div class="feature-info">
+        <p>Signature</p>
+        <h3>Soft Luxe Dressing</h3>
+      </div>
+    </article>
+  </section>
+
+  <div class="home-runtime-state" hidden aria-hidden="true">
+    <div class="runtime-notice" id="runtimeNotice" hidden></div>
+    <strong id="metricDataset"></strong>
+    <strong id="metricAccuracy"></strong>
+    <strong id="metricK"></strong>
+    <strong id="metricTrend"></strong>
+    <strong id="heroCategory"></strong>
+    <img id="heroImage" src="" alt="" hidden>
+  </div>
 
   <button
     class="chatbot-launcher"

@@ -2201,3 +2201,509 @@ input:disabled {
     min-height: 42px;
   }
 }
+
+/* E-SHINE homepage UI */
+body[data-page="home"] {
+  font-family: "Inter", "Avenir Next", "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #f7f1ea 0%, #f3ede6 45%, #efe8df 100%);
+  color: #161616;
+  min-height: 100vh;
+}
+
+body[data-page="home"] .page-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+body[data-page="home"] .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(10px);
+  opacity: 0.55;
+  animation: eshineFloatOrb 10s ease-in-out infinite;
+}
+
+body[data-page="home"] .orb-1 {
+  width: 220px;
+  height: 220px;
+  background: rgba(240, 194, 177, 0.55);
+  top: 80px;
+  left: -40px;
+}
+
+body[data-page="home"] .orb-2 {
+  width: 300px;
+  height: 300px;
+  background: rgba(219, 205, 252, 0.38);
+  top: 120px;
+  right: -90px;
+  animation-delay: 1.5s;
+}
+
+body[data-page="home"] .orb-3 {
+  width: 180px;
+  height: 180px;
+  background: rgba(255, 230, 180, 0.35);
+  bottom: 120px;
+  left: 42%;
+  animation-delay: 3s;
+}
+
+body[data-page="home"] .orb-4 {
+  width: 260px;
+  height: 260px;
+  background: rgba(205, 227, 244, 0.35);
+  bottom: -40px;
+  right: 14%;
+  animation-delay: 2s;
+}
+
+body[data-page="home"] .navbar {
+  width: min(1280px, calc(100% - 48px));
+  margin: 26px auto 0;
+  padding: 18px 26px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.52);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(25, 18, 9, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  z-index: 5;
+}
+
+body[data-page="home"] .logo {
+  font-family: "Playfair Display", "Iowan Old Style", "Palatino Linotype", serif;
+  font-size: 30px;
+  letter-spacing: 0.08em;
+}
+
+body[data-page="home"] .nav-links,
+body[data-page="home"] .nav-actions {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+body[data-page="home"] .nav-links a,
+body[data-page="home"] .nav-actions a {
+  text-decoration: none;
+  color: #161616;
+  font-size: 14px;
+  position: relative;
+}
+
+body[data-page="home"] .nav-links a::after,
+body[data-page="home"] .nav-actions a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.35s ease;
+}
+
+body[data-page="home"] .nav-links a:hover::after,
+body[data-page="home"] .nav-actions a:hover::after {
+  width: 100%;
+}
+
+body[data-page="home"] .bag-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+body[data-page="home"] .bag-count {
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: #111111;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+body[data-page="home"] .hero {
+  width: min(1280px, calc(100% - 48px));
+  margin: 34px auto 24px;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 34px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  padding: 0;
+}
+
+body[data-page="home"] .hero-left {
+  padding: 28px 8px 28px 4px;
+}
+
+body[data-page="home"] .eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #6a645d;
+  margin-bottom: 18px;
+}
+
+body[data-page="home"] .hero-left h1 {
+  font-family: "Playfair Display", "Iowan Old Style", "Palatino Linotype", serif;
+  font-size: clamp(52px, 7vw, 88px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  max-width: 620px;
+  margin-bottom: 20px;
+}
+
+body[data-page="home"] .hero-text {
+  max-width: 520px;
+  color: #6a645d;
+  font-size: 16px;
+  line-height: 1.75;
+  margin-bottom: 28px;
+}
+
+body[data-page="home"] .hero-buttons {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 42px;
+}
+
+body[data-page="home"] .btn {
+  text-decoration: none;
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-size: 14px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+body[data-page="home"] .btn:hover {
+  transform: translateY(-2px);
+}
+
+body[data-page="home"] .btn-dark {
+  background: #111111;
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(17, 17, 17, 0.15);
+}
+
+body[data-page="home"] .btn-light {
+  color: #161616;
+  border: 1px solid rgba(40, 40, 40, 0.14);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+body[data-page="home"] .mini-stats {
+  display: flex;
+  gap: 34px;
+  flex-wrap: wrap;
+}
+
+body[data-page="home"] .mini-stats h3 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+body[data-page="home"] .mini-stats p {
+  color: #6a645d;
+  font-size: 14px;
+}
+
+body[data-page="home"] .hero-right {
+  position: relative;
+  min-height: 720px;
+}
+
+body[data-page="home"] .card-stack {
+  position: relative;
+  height: 100%;
+}
+
+body[data-page="home"] .main-card {
+  position: absolute;
+  right: 0;
+  top: 20px;
+  width: min(100%, 520px);
+  height: 680px;
+  border-radius: 36px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(27, 20, 12, 0.12);
+  background: #dddddd;
+}
+
+body[data-page="home"] .main-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+body[data-page="home"] .main-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(19, 19, 19, 0.48), rgba(19, 19, 19, 0.04) 45%);
+}
+
+body[data-page="home"] .main-card-text {
+  position: absolute;
+  left: 28px;
+  bottom: 28px;
+  z-index: 2;
+  color: #ffffff;
+}
+
+body[data-page="home"] .main-card-text span {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.88;
+}
+
+body[data-page="home"] .main-card-text h2 {
+  font-family: "Playfair Display", "Iowan Old Style", "Palatino Linotype", serif;
+  font-size: 42px;
+  line-height: 1.02;
+  margin-top: 10px;
+}
+
+body[data-page="home"] .floating-card {
+  position: absolute;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 14px 45px rgba(39, 24, 14, 0.08);
+}
+
+body[data-page="home"] .small-card {
+  animation: eshineFloatCard 6s ease-in-out infinite;
+}
+
+body[data-page="home"] .top-card {
+  left: 0;
+  top: 100px;
+  width: 240px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+body[data-page="home"] .top-card img {
+  width: 74px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 18px;
+}
+
+body[data-page="home"] .top-card p {
+  font-size: 12px;
+  color: #6a645d;
+  margin-bottom: 4px;
+}
+
+body[data-page="home"] .top-card strong {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+body[data-page="home"] .bottom-card {
+  left: 40px;
+  bottom: 62px;
+  width: 270px;
+  padding: 24px;
+  animation-delay: 1.2s;
+}
+
+body[data-page="home"] .trend-chip {
+  display: inline-block;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.08);
+  font-size: 12px;
+  margin-bottom: 14px;
+}
+
+body[data-page="home"] .bottom-card h3 {
+  font-family: "Playfair Display", "Iowan Old Style", "Palatino Linotype", serif;
+  font-size: 30px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+body[data-page="home"] .bottom-card p {
+  color: #6a645d;
+  line-height: 1.65;
+  font-size: 14px;
+}
+
+body[data-page="home"] .featured-grid {
+  width: min(1280px, calc(100% - 48px));
+  margin: 10px auto 40px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  position: relative;
+  z-index: 2;
+}
+
+body[data-page="home"] .feature-card {
+  background: rgba(255, 255, 255, 0.52);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(35, 24, 16, 0.08);
+  transition: transform 0.35s ease;
+}
+
+body[data-page="home"] .feature-card:hover {
+  transform: translateY(-6px);
+}
+
+body[data-page="home"] .feature-card img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+body[data-page="home"] .feature-info {
+  padding: 18px 20px 22px;
+}
+
+body[data-page="home"] .feature-info p {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6a645d;
+  margin-bottom: 8px;
+}
+
+body[data-page="home"] .feature-info h3 {
+  font-family: "Playfair Display", "Iowan Old Style", "Palatino Linotype", serif;
+  font-size: 28px;
+  line-height: 1.06;
+}
+
+body[data-page="home"] .home-runtime-state {
+  display: none;
+}
+
+body[data-page="home"] .chatbot-launcher,
+body[data-page="home"] .chatbot-panel {
+  font-family: "Sora", "Avenir Next", "Segoe UI", sans-serif;
+}
+
+@keyframes eshineFloatOrb {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-18px) translateX(10px);
+  }
+}
+
+@keyframes eshineFloatCard {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@media (max-width: 1100px) {
+  body[data-page="home"] .hero {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-page="home"] .hero-right {
+    min-height: 760px;
+  }
+
+  body[data-page="home"] .main-card {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  body[data-page="home"] .top-card {
+    left: 40px;
+  }
+
+  body[data-page="home"] .featured-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  body[data-page="home"] .navbar {
+    border-radius: 28px;
+    padding: 16px 18px;
+    width: calc(100% - 24px);
+    margin-top: 12px;
+    gap: 14px;
+  }
+
+  body[data-page="home"] .nav-links {
+    display: none;
+  }
+
+  body[data-page="home"] .hero,
+  body[data-page="home"] .featured-grid {
+    width: calc(100% - 24px);
+  }
+
+  body[data-page="home"] .hero-left h1 {
+    font-size: 48px;
+  }
+
+  body[data-page="home"] .hero-buttons,
+  body[data-page="home"] .mini-stats {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  body[data-page="home"] .hero-right {
+    min-height: 680px;
+  }
+
+  body[data-page="home"] .main-card {
+    width: 100%;
+    height: 520px;
+    border-radius: 26px;
+  }
+
+  body[data-page="home"] .top-card {
+    width: 210px;
+    left: 8px;
+    top: 40px;
+  }
+
+  body[data-page="home"] .bottom-card {
+    width: 230px;
+    left: 8px;
+    bottom: 16px;
+    padding: 18px;
+  }
+
+  body[data-page="home"] .feature-card img {
+    height: 260px;
+  }
+}
