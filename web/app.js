@@ -853,7 +853,9 @@ function initFashionChatbot() {
 
   const setChatbotOpen = (isOpen) => {
     panel.hidden = !isOpen;
+    panel.setAttribute("aria-hidden", String(!isOpen));
     launcher.setAttribute("aria-expanded", String(isOpen));
+    launcher.textContent = isOpen ? "Close Help" : "Style Help";
     if (isOpen) {
       window.setTimeout(() => input.focus(), 40);
     }
@@ -907,6 +909,19 @@ function initFashionChatbot() {
     sendChatMessage(action.dataset.prompt || "");
   });
 
+  document.addEventListener("click", (event) => {
+    if (panel.hidden) return;
+    if (panel.contains(event.target) || launcher.contains(event.target)) return;
+    setChatbotOpen(false);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || panel.hidden) return;
+    setChatbotOpen(false);
+    launcher.focus();
+  });
+
+  setChatbotOpen(false);
   resetChatbot();
 }
 

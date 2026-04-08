@@ -299,6 +299,10 @@ body[data-page="home"] .home-result-card {
   overflow: hidden;
 }
 
+.chatbot-panel[hidden] {
+  display: none;
+}
+
 .chatbot-header {
   display: flex;
   align-items: start;
