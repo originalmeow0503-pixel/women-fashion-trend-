@@ -214,6 +214,60 @@ const STATIC_MEN_PRODUCTS = [
     description: "A quieter wardrobe basic that helps this linked page feel complete without becoming the main feature.",
   },
 ];
+const STATIC_NEW_ARRIVAL_PRODUCTS = [
+  {
+    product_id: "new-oversized-hoodie",
+    name: "Oversized Hoodie",
+    brand: "E-SHINE",
+    category: "Hoodies",
+    age_group: "Women",
+    occasion: "Casual",
+    price: 2199,
+    rating: 4.5,
+    recommendation_score: 0.86,
+    image: "https://images.unsplash.com/photo-1520975916090-3105956dac38",
+    description: "A soft casual arrival that keeps the page approachable and presentation-friendly.",
+  },
+  {
+    product_id: "new-street-style-jacket",
+    name: "Street Style Jacket",
+    brand: "E-SHINE",
+    category: "Jackets",
+    age_group: "Women",
+    occasion: "Outerwear",
+    price: 3499,
+    rating: 4.6,
+    recommendation_score: 0.88,
+    image: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb",
+    description: "A sharper arrival card that mirrors the older new-arrivals page layout without mixing codebases.",
+  },
+  {
+    product_id: "new-classic-denim",
+    name: "Classic Denim",
+    brand: "E-SHINE",
+    category: "Jeans",
+    age_group: "Women",
+    occasion: "Daily Wear",
+    price: 1999,
+    rating: 4.4,
+    recommendation_score: 0.83,
+    image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d",
+    description: "A simpler everyday arrival that supports the catalogue feel of the linked page.",
+  },
+  {
+    product_id: "new-summer-dress",
+    name: "Summer Dress",
+    brand: "E-SHINE",
+    category: "Dresses",
+    age_group: "Women",
+    occasion: "Vacation",
+    price: 2799,
+    rating: 4.7,
+    recommendation_score: 0.9,
+    image: "https://images.unsplash.com/photo-1519741497674-611481863552",
+    description: "A lighter editorial card that keeps the page visually close to the rest of the project.",
+  },
+];
 const state = {
   modelSummary: null,
   recommendations: [],
@@ -356,6 +410,13 @@ function buildCatalog() {
   });
 
   STATIC_MEN_PRODUCTS.map(normalizeProduct).forEach((product) => {
+    const key = buildProductKey(product);
+    if (!map.has(key)) {
+      map.set(key, { ...product, key });
+    }
+  });
+
+  STATIC_NEW_ARRIVAL_PRODUCTS.map(normalizeProduct).forEach((product) => {
     const key = buildProductKey(product);
     if (!map.has(key)) {
       map.set(key, { ...product, key });
