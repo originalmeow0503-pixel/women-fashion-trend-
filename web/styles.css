@@ -357,6 +357,10 @@ body[data-page="home"] .home-result-card {
   border-radius: 16px;
 }
 
+.chatbot-message-has-products {
+  max-width: 100%;
+}
+
 .chatbot-message p {
   margin: 0;
   color: var(--muted);
@@ -392,6 +396,70 @@ body[data-page="home"] .home-result-card {
   padding: 7px 10px;
   font-size: 0.72rem;
   font-weight: 500;
+}
+
+.chatbot-product-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chatbot-product-link {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(111, 66, 53, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.chatbot-product-link:hover,
+.chatbot-product-link:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(184, 92, 66, 0.35);
+  box-shadow: 0 10px 24px rgba(105, 67, 51, 0.12);
+}
+
+.chatbot-product-link img {
+  width: 64px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.chatbot-product-copy {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.chatbot-product-copy strong,
+.chatbot-product-copy span,
+.chatbot-product-copy em {
+  display: block;
+}
+
+.chatbot-product-copy strong {
+  color: var(--text);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.chatbot-product-copy span {
+  color: var(--muted);
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
+.chatbot-product-copy em {
+  color: var(--accent-dark);
+  font-size: 0.7rem;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 .chatbot-typing {

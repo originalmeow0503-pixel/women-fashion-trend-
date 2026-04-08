@@ -55,6 +55,59 @@ const STYLE_FALLBACK_SORTERS = {
   price_desc: (left, right) => Number(right.price || 0) - Number(left.price || 0),
   name_asc: (left, right) => String(left.name || "").localeCompare(String(right.name || "")),
 };
+const CHATBOT_OCCASION_RULES = [
+  { occasion: "Wedding", pattern: /(wedding|bridal|bride|ceremony|reception)/ },
+  { occasion: "Party", pattern: /(party|evening|night out|cocktail)/ },
+  { occasion: "Office", pattern: /(office|work|formal|meeting)/ },
+  { occasion: "Festive", pattern: /(festive|festival|ethnic|traditional|puja|diwali)/ },
+  { occasion: "Vacation", pattern: /(vacation|travel|trip|holiday|beach)/ },
+  { occasion: "Daily Wear", pattern: /(daily wear|everyday|regular wear)/ },
+  { occasion: "Casual", pattern: /(college|campus|class|casual)/ },
+];
+const CHATBOT_CATEGORY_RULES = [
+  { category: "Dresses", pattern: /(dress|dresses|gown|gowns)/, fallbackCategories: ["Dresses", "Sarees", "Ethnic Sets", "Traditional Wear", "Co-ord Sets"] },
+  { category: "Sarees", pattern: /(saree|sarees)/, fallbackCategories: ["Sarees", "Traditional Wear", "Ethnic Sets"] },
+  { category: "Ethnic Sets", pattern: /(ethnic set|ethnic sets|lehenga|lehengas|sharara|salwar set|anarkali)/, fallbackCategories: ["Ethnic Sets", "Traditional Wear", "Sarees"] },
+  { category: "Kurtis & Kurtas", pattern: /(kurti|kurtis|kurta|kurtas)/, fallbackCategories: ["Kurtis & Kurtas", "Ethnic Sets"] },
+  { category: "Co-ord Sets", pattern: /(co-ord|coord|co ord|matching set)/, fallbackCategories: ["Co-ord Sets", "Tops"] },
+  { category: "Tops", pattern: /(top|tops|blouse|blouses|shirt|shirts)/, fallbackCategories: ["Tops", "Co-ord Sets"] },
+  { category: "Bottom Wear", pattern: /(bottom|bottoms|jeans|trousers|pants|palazzo|palazzos|skirt|skirts)/, fallbackCategories: ["Bottom Wear", "Co-ord Sets"] },
+  { category: "Traditional Wear", pattern: /(traditional wear|traditional|ethnic wear)/, fallbackCategories: ["Traditional Wear", "Ethnic Sets", "Sarees"] },
+];
+const CHATBOT_STOPWORDS = new Set([
+  "a",
+  "an",
+  "and",
+  "any",
+  "best",
+  "can",
+  "for",
+  "from",
+  "give",
+  "help",
+  "i",
+  "in",
+  "is",
+  "like",
+  "look",
+  "me",
+  "my",
+  "need",
+  "of",
+  "on",
+  "outfit",
+  "outfits",
+  "please",
+  "recommend",
+  "show",
+  "some",
+  "suggest",
+  "the",
+  "to",
+  "want",
+  "wear",
+  "with",
+]);
 const state = {
   modelSummary: null,
   recommendations: [],
@@ -799,6 +852,12 @@ function renderShop() {
     occasionFilter.insertAdjacentHTML("beforeend", `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`);
   });
 
+  const initialFilters = getShopFiltersFromUrl();
+  if (initialFilters.search) searchInput.value = initialFilters.search;
+  if (hasSelectOption(ageFilter, initialFilters.age)) ageFilter.value = initialFilters.age;
+  if (hasSelectOption(occasionFilter, initialFilters.occasion)) occasionFilter.value = initialFilters.occasion;
+  if (hasSelectOption(sortFilter, initialFilters.sort)) sortFilter.value = initialFilters.sort;
+
   const render = () => {
     const query = searchInput.value.trim().toLowerCase();
     const ageValue = ageFilter.value;
@@ -838,6 +897,203 @@ function renderShop() {
   });
 }
 
+function getShopFiltersFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    search: params.get("search") || "",
+    age: params.get("age") || "all",
+    occasion: params.get("occasion") || "all",
+    sort: params.get("sort") || "trend_desc",
+  };
+}
+
+function hasSelectOption(select, value) {
+  return Boolean(value) && Array.from(select.options).some((option) => option.value === value);
+}
+
+function parseChatbotIntent(message) {
+  const normalizedMessage = String(message || "").toLowerCase();
+  const occasionRule = CHATBOT_OCCASION_RULES.find((rule) => rule.pattern.test(normalizedMessage));
+  const categoryRule = CHATBOT_CATEGORY_RULES.find((rule) => rule.pattern.test(normalizedMessage));
+  const stylePreference = getChatbotStylePreferenceKey(normalizedMessage);
+
+  return {
+    message: normalizedMessage,
+    occasion: occasionRule?.occasion || "",
+    category: categoryRule?.category || "",
+    categoryFallbacks: categoryRule?.fallbackCategories || [],
+    stylePreference,
+    styleConfig: getStylePreferenceConfig(stylePreference),
+    keywords: extractChatbotKeywords(normalizedMessage),
+  };
+}
+
+function getChatbotStylePreferenceKey(message) {
+  const normalizedMessage = String(message || "").toLowerCase();
+  const entry = Object.entries(STYLE_PREFERENCE_CONFIG).find(([key, config]) => {
+    if (key === "no_preference") return false;
+    if (normalizedMessage.includes(config.label.toLowerCase())) return true;
+    return config.keywords.some((keyword) => normalizedMessage.includes(keyword));
+  });
+
+  return entry?.[0] || "no_preference";
+}
+
+function extractChatbotKeywords(message) {
+  const words = String(message || "").toLowerCase().match(/[a-z]+/g) || [];
+  return uniqueValues(
+    words.filter((word) => word.length > 2 && !CHATBOT_STOPWORDS.has(word)),
+  );
+}
+
+function buildChatbotResponse(message) {
+  const intent = parseChatbotIntent(message);
+  const wantsRecommendations =
+    Boolean(intent.occasion)
+    || Boolean(intent.category)
+    || intent.stylePreference !== "no_preference"
+    || /(suggest|recommend|show|find|need|wear|look|style|shopping)/.test(intent.message);
+
+  if (wantsRecommendations) {
+    const recommendationResult = getChatbotRecommendations(intent);
+    if (recommendationResult.products.length) {
+      return {
+        text: buildChatbotRecommendationText(intent, recommendationResult),
+        products: recommendationResult.products,
+      };
+    }
+  }
+
+  return {
+    text: getChatbotReply(message),
+    products: [],
+  };
+}
+
+function getChatbotRecommendations(intent) {
+  const catalog = state.recommendations.length ? state.recommendations : state.sampleProducts;
+  if (!catalog.length) {
+    return { products: [], usedCategoryFallback: false };
+  }
+
+  let pool = [...catalog];
+
+  if (intent.occasion) {
+    const occasionMatches = pool.filter((product) => product.occasion === intent.occasion);
+    if (occasionMatches.length) {
+      pool = occasionMatches;
+    }
+  }
+
+  let usedCategoryFallback = false;
+  if (intent.category) {
+    const exactCategoryMatches = pool.filter((product) => product.category === intent.category);
+    if (exactCategoryMatches.length) {
+      pool = exactCategoryMatches;
+    } else if (intent.categoryFallbacks.length) {
+      const fallbackMatches = pool.filter((product) => intent.categoryFallbacks.includes(product.category));
+      if (fallbackMatches.length) {
+        pool = fallbackMatches;
+        usedCategoryFallback = true;
+      }
+    }
+  }
+
+  return {
+    products: rankChatbotProducts(pool, intent).slice(0, 3),
+    usedCategoryFallback,
+  };
+}
+
+function rankChatbotProducts(products, intent) {
+  return rankProductsByStyle(products, intent.styleConfig)
+    .map((product) => {
+      const haystack = [
+        product.name,
+        product.description,
+        product.brand,
+        product.colour,
+        product.category,
+        product.occasion,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      const keywordHits = intent.keywords.reduce((count, keyword) => {
+        return haystack.includes(keyword) ? count + 1 : count;
+      }, 0);
+      const categoryBoost = intent.category && product.category === intent.category ? 0.08 : 0;
+      const occasionBoost = intent.occasion && product.occasion === intent.occasion ? 0.06 : 0;
+      const keywordBoost = keywordHits * 0.03;
+      const baseScore = Number(product._matchScore || product.recommendation_score || product.trend_score || 0);
+
+      return {
+        ...product,
+        _chatbotScore: baseScore + categoryBoost + occasionBoost + keywordBoost,
+        _chatbotKeywordHits: keywordHits,
+      };
+    })
+    .sort((left, right) => {
+      if (right._chatbotScore !== left._chatbotScore) {
+        return right._chatbotScore - left._chatbotScore;
+      }
+      if (right._chatbotKeywordHits !== left._chatbotKeywordHits) {
+        return right._chatbotKeywordHits - left._chatbotKeywordHits;
+      }
+      return Number(right.recommendation_score || 0) - Number(left.recommendation_score || 0);
+    });
+}
+
+function buildChatbotRecommendationText(intent, recommendationResult) {
+  const { products, usedCategoryFallback } = recommendationResult;
+  const styleSuffix = intent.stylePreference !== "no_preference"
+    ? ` with a ${intent.styleConfig.label.toLowerCase()} feel`
+    : "";
+
+  if (intent.occasion && intent.category && usedCategoryFallback) {
+    return `I could not find exact ${intent.category.toLowerCase()} for ${intent.occasion.toLowerCase()} in the current catalog, so here are the closest ${intent.occasion.toLowerCase()} picks${styleSuffix}. Click any image to open it in the Women shop page.`;
+  }
+
+  if (intent.occasion && intent.category) {
+    return `Here are ${products.length} ${intent.occasion.toLowerCase()} ${intent.category.toLowerCase()} picks from your website${styleSuffix}. Click any image to open it in the Women shop page.`;
+  }
+
+  if (intent.occasion) {
+    return `Here are ${products.length} ${intent.occasion.toLowerCase()} recommendations from your website${styleSuffix}. Click any image to open it in the Women shop page.`;
+  }
+
+  if (intent.category) {
+    return `Here are ${products.length} ${intent.category.toLowerCase()} picks from your website${styleSuffix}. Click any image to open it in the Women shop page.`;
+  }
+
+  return `Here are ${products.length} style picks from your website${styleSuffix}. Click any image to open it in the Women shop page.`;
+}
+
+function buildChatbotShopUrl(product) {
+  const safeProduct = normalizeProduct(product);
+  const params = new URLSearchParams();
+  params.set("search", safeProduct.name || "");
+  if (safeProduct.age_group) params.set("age", safeProduct.age_group);
+  if (safeProduct.occasion) params.set("occasion", safeProduct.occasion);
+  params.set("sort", "trend_desc");
+  return `./women.html?${params.toString()}#shop`;
+}
+
+function createChatbotProductCardMarkup(product) {
+  const safeProduct = normalizeProduct(product);
+  return `
+    <a class="chatbot-product-link" href="${escapeAttribute(buildChatbotShopUrl(safeProduct))}">
+      <img src="${escapeAttribute(safeProduct.image)}" alt="${escapeAttribute(safeProduct.name)}" loading="lazy">
+      <span class="chatbot-product-copy">
+        <strong>${escapeHtml(safeProduct.name)}</strong>
+        <span>${escapeHtml(safeProduct.category || "Style")} • ${formatCurrency(safeProduct.price)}</span>
+        <span>${escapeHtml(safeProduct.occasion || "Occasion")} • ${escapeHtml(safeProduct.brand || "Fashion Brand")}</span>
+        <em>Open in Women shop</em>
+      </span>
+    </a>
+  `;
+}
+
 function initFashionChatbot() {
   const launcher = document.getElementById("chatbotLauncher");
   const panel = document.getElementById("chatbotPanel");
@@ -847,7 +1103,7 @@ function initFashionChatbot() {
   const clearButton = document.getElementById("chatbotClear");
   const quickActions = document.getElementById("chatbotQuickActions");
   const typing = document.getElementById("chatbotTyping");
-  const welcomeMessage = "Hi, I can help with college, office, party, wedding, and colour-based outfit suggestions.";
+  const welcomeMessage = "Hi, ask for wedding, party, office, college, or colour-based outfit ideas and I will show clickable product picks from your website.";
 
   if (!launcher || !panel || !form || !input || !messages || !clearButton || !quickActions || !typing) return;
 
@@ -861,10 +1117,23 @@ function initFashionChatbot() {
     }
   };
 
-  const appendChatMessage = (role, text) => {
+  const appendChatMessage = (role, text, options = {}) => {
     const article = document.createElement("article");
     article.className = `chatbot-message chatbot-message-${role}`;
-    article.innerHTML = `<p>${escapeHtml(text)}</p>`;
+    if (role === "assistant" && options.products?.length) {
+      article.classList.add("chatbot-message-has-products");
+    }
+
+    const messageParts = [`<p>${escapeHtml(text)}</p>`];
+    if (role === "assistant" && options.products?.length) {
+      messageParts.push(`
+        <div class="chatbot-product-list">
+          ${options.products.map((product) => createChatbotProductCardMarkup(product)).join("")}
+        </div>
+      `);
+    }
+
+    article.innerHTML = messageParts.join("");
     messages.appendChild(article);
     messages.scrollTop = messages.scrollHeight;
   };
@@ -887,7 +1156,8 @@ function initFashionChatbot() {
 
     window.setTimeout(() => {
       typing.hidden = true;
-      appendChatMessage("assistant", getChatbotReply(cleanText));
+      const response = buildChatbotResponse(cleanText);
+      appendChatMessage("assistant", response.text, { products: response.products });
     }, 320);
   };
 
